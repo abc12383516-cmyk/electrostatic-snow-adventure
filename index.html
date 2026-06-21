@@ -304,6 +304,49 @@
     }
 
     /* ============================================
+       語音辨識按鈕
+       ============================================ */
+    .mic-btn {
+      width: 72px; height: 72px;
+      border-radius: 50%; border: none;
+      background: linear-gradient(135deg, var(--accent2), #4db8e8);
+      color: #fff; font-size: 28px;
+      cursor: pointer; position: relative;
+      transition: transform 0.2s, box-shadow 0.3s;
+      box-shadow: 0 4px 16px var(--glow-blue);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .mic-btn:hover { transform: scale(1.08); box-shadow: 0 6px 24px var(--glow-blue); }
+    .mic-btn.listening {
+      background: linear-gradient(135deg, #e53935, #ff5252);
+      box-shadow: 0 0 0 0 rgba(229,57,53,0.5);
+      animation: mic-pulse 1.5s ease-in-out infinite;
+    }
+    @keyframes mic-pulse {
+      0% { box-shadow: 0 0 0 0 rgba(229,57,53,0.5); }
+      50% { box-shadow: 0 0 0 18px rgba(229,57,53,0); }
+      100% { box-shadow: 0 0 0 0 rgba(229,57,53,0); }
+    }
+    .mic-status {
+      font-size: 0.48em; text-align: center; margin-top: 6px;
+      color: #7090a8; min-height: 1.4em; font-weight: 600;
+      transition: color 0.3s;
+    }
+    .mic-status.active { color: #e53935; }
+    .mic-live-text {
+      font-size: 0.52em; color: var(--accent2); font-weight: 700;
+      text-align: center; min-height: 1.6em;
+      padding: 6px 12px; border-radius: 8px;
+      background: rgba(26,143,209,0.06);
+      transition: all 0.3s;
+    }
+    .mic-live-text.has-text {
+      background: rgba(26,143,209,0.12);
+      color: var(--text-primary);
+    }
+
+    /* ============================================
        全局雪花粒子
        ============================================ */
     .snowflake-layer {
@@ -344,33 +387,43 @@
     </section>
 
     <!-- ========================================
-         Slide 2: 即時彈幕牆
+         Slide 2: 語音彈幕牆
          ======================================== -->
     <section id="slide-danmaku">
-      <h2>💬 你在哪裡遇過靜電？</h2>
-      <div style="display: grid; grid-template-columns: 1fr; height: 480px; gap: 14px;">
+      <h2>🎤 你在哪裡遇過靜電？</h2>
+      <div style="display: grid; grid-template-columns: 1fr; height: 490px; gap: 10px;">
         <!-- 彈幕區 -->
-        <div style="position: relative; flex: 1;">
-          <div class="danmaku-wall" id="danmaku-wall" style="height: 370px;">
+        <div style="position: relative;">
+          <div class="danmaku-wall" id="danmaku-wall" style="height: 340px;">
             <div id="danmaku-hint" style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
                  color:#8ab4d0; font-size:0.6em; text-align:center; pointer-events:none; line-height: 2;">
-              ❄️ 輸入你的答案<br>文字會像彈幕一樣飛過螢幕！ ❄️
+              🎤 按下麥克風按鈕，用說的回答！<br>辨識到的文字會變成彈幕飛過螢幕 ❄️
             </div>
           </div>
-          <!-- 輸入列 -->
-          <div style="display: flex; gap: 12px; margin-top: 12px; align-items: center;">
-            <input id="dm-input" type="text" placeholder="輸入你遇過靜電的地方…（例：梳頭髮、摸門把）" maxlength="20"
+          <!-- 語音即時辨識顯示 -->
+          <div id="mic-live-text" class="mic-live-text" style="margin-top: 8px;">等待語音輸入…</div>
+          <!-- 控制列 -->
+          <div style="display: flex; gap: 14px; margin-top: 10px; align-items: center;">
+            <!-- 麥克風按鈕 -->
+            <div style="display: flex; flex-direction: column; align-items: center;">
+              <button id="mic-btn" class="mic-btn" onclick="window.toggleMic && window.toggleMic()" title="開始語音辨識">
+                🎤
+              </button>
+              <div id="mic-status" class="mic-status">點擊開始聆聽</div>
+            </div>
+            <!-- 文字輸入備用 -->
+            <input id="dm-input" type="text" placeholder="或用打字的：梳頭髮、摸門把…" maxlength="20"
               style="flex: 1; padding: 12px 18px; border-radius: 12px; border: 2px solid var(--ice-border);
                      background: rgba(255,255,255,0.8); color: var(--text-primary); font-size: 15px;
                      box-sizing: border-box; font-family: inherit; outline: none;
-                     transition: border-color 0.3s, box-shadow 0.3s;" 
+                     transition: border-color 0.3s, box-shadow 0.3s;"
               onfocus="this.style.borderColor='var(--accent2)';this.style.boxShadow='0 0 12px var(--glow-blue)'"
               onblur="this.style.borderColor='var(--ice-border)';this.style.boxShadow='none'" />
-            <button id="dm-btn" class="btn-primary" style="padding: 12px 28px; font-size: 15px;" onclick="window.dmSubmit && window.dmSubmit()">
+            <button id="dm-btn" class="btn-primary" style="padding: 12px 22px; font-size: 15px;" onclick="window.dmSubmit && window.dmSubmit()">
               🚀 發射！
             </button>
-            <div style="text-align: center; min-width: 70px;">
-              <div style="font-size: 0.5em; color: #8ab4d0;">已發射</div>
+            <div style="text-align: center; min-width: 65px;">
+              <div style="font-size: 0.48em; color: #8ab4d0;">已發射</div>
               <div id="dm-count" style="font-size: 1.2em; font-weight: 900; color: var(--accent2);">0</div>
             </div>
           </div>
@@ -749,6 +802,108 @@
 </script>
 
 <!-- ================================================================
+     Web Speech API 語音辨識
+     ================================================================ -->
+<script>
+(function() {
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  let recognition = null;
+  let isListening = false;
+
+  if (!SpeechRecognition) {
+    // 瀏覽器不支援
+    const statusEl = document.getElementById('mic-status');
+    if (statusEl) statusEl.textContent = '⚠️ 此瀏覽器不支援語音辨識';
+    const btn = document.getElementById('mic-btn');
+    if (btn) { btn.style.opacity = '0.4'; btn.style.cursor = 'not-allowed'; }
+    return;
+  }
+
+  recognition = new SpeechRecognition();
+  recognition.lang = 'zh-TW';
+  recognition.continuous = true;       // 持續聆聽
+  recognition.interimResults = true;   // 即時顯示辨識中的文字
+  recognition.maxAlternatives = 1;
+
+  const micBtn = document.getElementById('mic-btn');
+  const statusEl = document.getElementById('mic-status');
+  const liveText = document.getElementById('mic-live-text');
+
+  recognition.onresult = function(event) {
+    let interim = '';
+    for (let i = event.resultIndex; i < event.results.length; i++) {
+      const transcript = event.results[i][0].transcript.trim();
+      if (event.results[i].isFinal) {
+        // 最終結果 → 發射彈幕！
+        if (transcript.length > 0 && transcript.length <= 30) {
+          // 呼叫全域的 dmFireFromSpeech（在 Firebase module 中定義）
+          if (window.dmFireFromSpeech) {
+            window.dmFireFromSpeech(transcript);
+          }
+          if (liveText) {
+            liveText.textContent = `✅ 「${transcript}」已發射！`;
+            liveText.classList.remove('has-text');
+            setTimeout(() => {
+              if (isListening) liveText.textContent = '🎤 聆聽中…請說出你的答案';
+            }, 1500);
+          }
+        }
+      } else {
+        interim = transcript;
+      }
+    }
+    // 顯示即時辨識中的文字
+    if (interim && liveText) {
+      liveText.textContent = '🗣️ ' + interim + '…';
+      liveText.classList.add('has-text');
+    }
+  };
+
+  recognition.onend = function() {
+    // 持續聆聽模式：如果仍在聆聽狀態，自動重啟
+    if (isListening) {
+      try { recognition.start(); } catch(e) { /* 忽略 */ }
+    }
+  };
+
+  recognition.onerror = function(event) {
+    console.warn('[Speech] Error:', event.error);
+    if (event.error === 'not-allowed') {
+      if (statusEl) statusEl.textContent = '⚠️ 請允許麥克風權限';
+      isListening = false;
+      micBtn.classList.remove('listening');
+    } else if (event.error === 'no-speech') {
+      // 靜默 — 自動重啟
+    }
+  };
+
+  window.toggleMic = function() {
+    if (!recognition) return;
+    if (isListening) {
+      // 停止
+      isListening = false;
+      recognition.stop();
+      micBtn.classList.remove('listening');
+      micBtn.innerHTML = '🎤';
+      statusEl.textContent = '點擊開始聆聽';
+      statusEl.classList.remove('active');
+      liveText.textContent = '等待語音輸入…';
+      liveText.classList.remove('has-text');
+    } else {
+      // 開始
+      isListening = true;
+      try { recognition.start(); } catch(e) { /* 可能已在運行 */ }
+      micBtn.classList.add('listening');
+      micBtn.innerHTML = '⏹️';
+      statusEl.textContent = '🔴 聆聽中…';
+      statusEl.classList.add('active');
+      liveText.textContent = '🎤 聆聽中…請說出你的答案';
+    }
+  };
+})();
+</script>
+
+<!-- ================================================================
      Firebase 彈幕 & 投票
      ================================================================ -->
 <script type="module">
@@ -840,6 +995,25 @@
     if (e.key === 'Enter') { e.preventDefault(); window.dmSubmit(); }
   });
   document.getElementById('dm-btn')?.addEventListener('click', () => window.dmSubmit());
+
+  // ── 語音辨識觸發的彈幕發射 ──
+  window.dmFireFromSpeech = async function(word) {
+    if (!word || word.length === 0) return;
+    try {
+      if (firebaseReady && dmRef) {
+        await addDoc(dmRef, { word, created_at: serverTimestamp(), source: 'speech' });
+      }
+      launchDanmaku(word);
+      dmCount++;
+      document.getElementById('dm-count').textContent = dmCount;
+      showToast(`🎤 「${word}」 語音發射！`);
+    } catch(e) {
+      console.error('[DM] Speech fire error:', e);
+      launchDanmaku(word);
+      dmCount++;
+      document.getElementById('dm-count').textContent = dmCount;
+    }
+  };
 
   // ── Firebase 即時同步（其他人的彈幕也會飛過來）──
   if (firebaseReady && dmRef) {
