@@ -7,242 +7,350 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reset.css" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/night.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;600;700;900&display=swap" rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/wordcloud@1.2.2/src/wordcloud2.min.js"></script>
   <style>
-    /* === 全域變數與主題 === */
+    /* ============================================
+       全域主題變數
+       ============================================ */
     :root {
-      --accent:  #e8643a;   /* 橘紅 (正電荷/強調) */
-      --accent2: #4fc3f7;   /* 青藍 (負電荷/科技) */
-      --success: #81c784;   /* 綠色 (答對/成功) */
-      --warn:    #ffb74d;   /* 琥珀 (警告/思考) */
-      --bg-dark: #0d1117;
+      --accent:  #ff6b3d;
+      --accent2: #4fc3f7;
+      --success: #66bb6a;
+      --warn:    #ffa726;
+      --bg-dark: #0a0e17;
+      --bg-card: rgba(255,255,255,0.07);
+      --text-primary: #f0f0f0;
+      --text-secondary: #c0c8d8;
+      --glow-blue:   rgba(79,195,247,0.55);
+      --glow-orange: rgba(255,107,61,0.55);
     }
 
+    /* ============================================
+       Reveal.js 覆蓋 — 字型與基本配色
+       ============================================ */
     .reveal {
-      font-family: 'Segoe UI', 'Noto Sans TC', 'Microsoft JhengHei', sans-serif;
+      font-family: 'Noto Sans TC', 'Microsoft JhengHei', 'Segoe UI', sans-serif;
       background: var(--bg-dark);
-      color: #fff;
+      color: var(--text-primary);
     }
+    .reveal .slides { text-align: left; }
+    .reveal .slides > section { padding: 20px 30px; }
 
     .reveal h1, .reveal h2, .reveal h3 {
-      font-family: 'Segoe UI', 'Noto Sans TC', 'Microsoft JhengHei', sans-serif;
-      font-weight: 700;
-      letter-spacing: -0.01em;
-      text-shadow: 0 0 10px rgba(255,255,255,0.1);
+      font-family: 'Noto Sans TC', 'Microsoft JhengHei', sans-serif;
+      font-weight: 900;
+      letter-spacing: 0.02em;
+      text-shadow: 0 2px 20px rgba(79,195,247,0.25), 0 0 40px rgba(79,195,247,0.08);
     }
-    
-    .reveal h1 { 
-      font-size: 2.0em; 
+    .reveal h1 {
+      font-size: 2.4em;
       color: #fff;
-      line-height: 1.2;
+      line-height: 1.15;
     }
-    .reveal h2 { 
-      font-size: 1.4em; 
-      color: var(--accent2); 
-      margin-bottom: 25px;
-      border-bottom: 2px solid rgba(79,195,247,0.2);
-      display: inline-block;
-      padding-bottom: 8px;
+    .reveal h2 {
+      font-size: 1.6em;
+      color: var(--accent2);
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 3px solid;
+      border-image: linear-gradient(90deg, var(--accent2), var(--accent), transparent) 1;
+      display: block;
+      text-align: center;
     }
-    .reveal .progress { color: var(--accent); }
+    .reveal h3 {
+      font-size: 1.1em;
+      color: var(--accent2);
+    }
+    .reveal .progress { color: var(--accent); height: 5px; }
     .reveal .controls { color: var(--accent2); }
 
-    /* === 玻璃擬態卡片 === */
+    /* 全域文字可見性大幅提升 */
+    .reveal section {
+      text-shadow: 0 1px 3px rgba(0,0,0,0.6);
+    }
+    .reveal ul, .reveal ol { margin-left: 0.8em; }
+    .reveal li { margin-bottom: 0.35em; }
+
+    /* ============================================
+       玻璃擬態卡片（更鮮明）
+       ============================================ */
     .glass-card {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 12px;
-      padding: 24px;
-      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
-      backdrop-filter: blur(4px);
-      -webkit-backdrop-filter: blur(4px);
+      background: linear-gradient(135deg, rgba(20,30,50,0.85) 0%, rgba(15,20,35,0.9) 100%);
+      border: 1px solid rgba(79,195,247,0.15);
+      border-radius: 16px;
+      padding: 26px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.06);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
     }
 
-    /* === 封面 === */
-    .title-slide { 
-      text-align: center; 
-      padding: 20px;
+    /* ============================================
+       封面
+       ============================================ */
+    .title-slide {
+      text-align: center;
+      padding: 30px 40px;
     }
     .title-slide .tag {
       display: inline-block;
-      background: linear-gradient(135deg, var(--accent), #f78b66);
+      background: linear-gradient(135deg, var(--accent), #ff9a6c);
       color: #fff;
-      padding: 6px 16px;
-      border-radius: 20px;
-      font-size: 0.5em;
-      letter-spacing: 0.08em;
-      margin-bottom: 1.2em;
-      font-weight: 600;
-      box-shadow: 0 0 15px rgba(232,100,58,0.4);
+      padding: 8px 22px;
+      border-radius: 24px;
+      font-size: 0.55em;
+      letter-spacing: 0.1em;
+      margin-bottom: 1em;
+      font-weight: 700;
+      box-shadow: 0 4px 20px var(--glow-orange);
     }
-    .title-slide .subtitle { 
-      font-size: 0.75em; 
-      color: #ccc; 
+    .title-slide .subtitle {
+      font-size: 0.8em;
+      color: var(--text-secondary);
       margin-top: 0.6em;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.06em;
     }
-    .title-slide .author { 
-      margin-top: 2.2em; 
-      font-size: 0.45em; 
-      color: #888; 
+    .title-slide .author {
+      margin-top: 2em;
+      font-size: 0.52em;
+      color: #9aa;
     }
 
-    /* === 優勢卡 (ICON 頁面) === */
-    .adv-grid-3 { 
-      display: grid; 
-      grid-template-columns: 1fr 1fr 1fr; 
-      gap: 16px; 
-      margin-top: 10px; 
+    /* ============================================
+       優勢卡 (ICON 頁面)
+       ============================================ */
+    .adv-grid-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 18px;
+      margin-top: 14px;
     }
-    .adv-grid-4 { 
-      display: grid; 
-      grid-template-columns: 1fr 1fr 1fr 1fr; 
-      gap: 12px; 
-      margin-top: 10px; 
+    .adv-grid-4 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+      gap: 14px;
+      margin-top: 14px;
     }
     .adv-card {
-      background: rgba(255, 255, 255, 0.04);
+      background: linear-gradient(180deg, rgba(79,195,247,0.06) 0%, rgba(15,20,35,0.9) 100%);
       border-top: 4px solid var(--accent2);
-      border-radius: 8px;
-      padding: 16px;
+      border-radius: 12px;
+      padding: 18px 14px;
       text-align: center;
-      transition: transform 0.3s, background 0.3s, box-shadow 0.3s;
-      border-left: 1px solid rgba(255,255,255,0.05);
-      border-right: 1px solid rgba(255,255,255,0.05);
-      border-bottom: 1px solid rgba(255,255,255,0.05);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      border-left: 1px solid rgba(79,195,247,0.1);
+      border-right: 1px solid rgba(79,195,247,0.1);
+      border-bottom: 1px solid rgba(79,195,247,0.05);
     }
     .adv-card:hover {
-      transform: translateY(-5px);
-      background: rgba(255, 255, 255, 0.08);
-      box-shadow: 0 10px 20px rgba(79,195,247,0.15);
+      transform: translateY(-6px) scale(1.02);
+      box-shadow: 0 12px 30px var(--glow-blue);
     }
     .adv-card.orange-theme {
+      background: linear-gradient(180deg, rgba(255,107,61,0.06) 0%, rgba(15,20,35,0.9) 100%);
       border-top-color: var(--accent);
+      border-left-color: rgba(255,107,61,0.1);
+      border-right-color: rgba(255,107,61,0.1);
+      border-bottom-color: rgba(255,107,61,0.05);
     }
     .adv-card.orange-theme:hover {
-      box-shadow: 0 10px 20px rgba(232,100,58,0.15);
+      box-shadow: 0 12px 30px var(--glow-orange);
     }
-    .adv-card .adv-icon { 
-      margin-bottom: 12px; 
-    }
+    .adv-card .adv-icon { margin-bottom: 10px; }
     .adv-card .adv-icon img {
-      width: 64px; 
-      height: 64px; 
+      width: 72px; height: 72px;
       object-fit: contain;
-      display: block; 
-      margin: 0 auto;
-      filter: drop-shadow(0 0 8px rgba(79,195,247,0.5));
-      transition: filter 0.3s;
+      display: block; margin: 0 auto;
+      filter: drop-shadow(0 0 12px var(--glow-blue));
+      transition: filter 0.3s, transform 0.3s;
     }
     .adv-card:hover .adv-icon img {
-      filter: drop-shadow(0 0 15px rgba(79,195,247,0.8));
+      filter: drop-shadow(0 0 22px var(--glow-blue));
+      transform: scale(1.1);
     }
     .adv-card.orange-theme .adv-icon img {
-      filter: drop-shadow(0 0 8px rgba(232,100,58,0.5));
+      filter: drop-shadow(0 0 12px var(--glow-orange));
     }
     .adv-card.orange-theme:hover .adv-icon img {
-      filter: drop-shadow(0 0 15px rgba(232,100,58,0.8));
+      filter: drop-shadow(0 0 22px var(--glow-orange));
     }
-    .adv-card .adv-title { 
-      font-size: 0.55em; 
-      font-weight: 700; 
-      color: var(--accent2); 
-      margin-bottom: 8px; 
+    .adv-card .adv-title {
+      font-size: 0.62em;
+      font-weight: 700;
+      color: var(--accent2);
+      margin-bottom: 8px;
     }
-    .adv-card.orange-theme .adv-title {
-      color: var(--accent);
-    }
-    .adv-card .adv-desc { 
-      font-size: 0.4em; 
-      color: #ccc; 
-      line-height: 1.6; 
+    .adv-card.orange-theme .adv-title { color: var(--accent); }
+    .adv-card .adv-desc {
+      font-size: 0.48em;
+      color: var(--text-secondary);
+      line-height: 1.65;
       text-align: left;
     }
 
-    /* === 電荷圓圈樣式 === */
+    /* ============================================
+       電荷圓圈
+       ============================================ */
     .charge-dot {
-      width: 18px;
-      height: 18px;
+      width: 22px; height: 22px;
       border-radius: 50%;
       position: absolute;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 11px;
-      font-weight: 900;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 900;
       color: #fff;
-      box-shadow: 0 0 6px rgba(0,0,0,0.5);
       user-select: none;
-      transition: left 0.1s linear, top 0.1s linear;
+      transition: left 0.15s ease-out, top 0.15s ease-out;
     }
     .charge-dot.plus {
-      background: var(--accent);
-      box-shadow: 0 0 8px rgba(232,100,58,0.7);
+      background: radial-gradient(circle, #ff9a6c, var(--accent));
+      box-shadow: 0 0 10px var(--glow-orange);
     }
     .charge-dot.minus {
-      background: var(--accent2);
-      box-shadow: 0 0 8px rgba(79,195,247,0.7);
+      background: radial-gradient(circle, #81d4fa, #29b6f6);
+      box-shadow: 0 0 10px var(--glow-blue);
     }
 
-    /* === 結論展示 === */
-    .conclusion-grid { 
-      display: grid; 
-      grid-template-columns: 1fr 1fr; 
-      gap: 16px; 
-      margin-top: 15px; 
-    }
-    .conclusion-card { 
-      border-radius: 10px; 
-      padding: 18px; 
-      font-size: 0.44em; 
+    /* ============================================
+       結論卡
+       ============================================ */
+    .conclusion-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 15px; }
+    .conclusion-card {
+      border-radius: 14px;
+      padding: 20px;
+      font-size: 0.52em;
     }
     .conclusion-card.positive {
-      background: rgba(79,195,247,0.1);
+      background: linear-gradient(135deg, rgba(79,195,247,0.12) 0%, rgba(20,30,50,0.9) 100%);
       border: 1px solid rgba(79,195,247,0.3);
     }
     .conclusion-card.caution {
-      background: rgba(255,183,77,0.08);
-      border: 1px solid rgba(255,183,77,0.25);
+      background: linear-gradient(135deg, rgba(255,167,38,0.1) 0%, rgba(20,30,50,0.9) 100%);
+      border: 1px solid rgba(255,167,38,0.3);
     }
-    .conclusion-card .cc-title { 
-      font-size: 1.25em; 
-      font-weight: 700; 
-      margin-bottom: 8px; 
+    .conclusion-card .cc-title {
+      font-size: 1.15em; font-weight: 700; margin-bottom: 10px;
     }
     .conclusion-card.positive .cc-title { color: var(--accent2); }
-    .conclusion-card.caution .cc-title { color: var(--warn); }
-    .conclusion-card ul { 
-      list-style: none; 
-      padding: 0; 
-      margin: 0; 
-      color: #ccc; 
-      line-height: 1.8; 
-      text-align: left;
+    .conclusion-card.caution  .cc-title { color: var(--warn); }
+    .conclusion-card ul {
+      list-style: none; padding: 0; margin: 0;
+      color: var(--text-secondary);
+      line-height: 1.9; text-align: left;
     }
-    .conclusion-card ul li::before { 
-      content: "✦ "; 
-      opacity: 0.6; 
+    .conclusion-card ul li::before { content: "→ "; color: var(--accent2); opacity: 0.7; }
+    .conclusion-card.caution ul li::before { color: var(--warn); }
+
+    /* ============================================
+       動畫
+       ============================================ */
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.55; transform: scale(0.92); }
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-8px); }
+    }
+    @keyframes shimmer {
+      0% { background-position: -200% center; }
+      100% { background-position: 200% center; }
+    }
+    @keyframes glow-border {
+      0%, 100% { border-color: rgba(79,195,247,0.2); }
+      50% { border-color: rgba(79,195,247,0.45); }
     }
 
-    /* === LIVE 動畫與動畫元件 === */
-    @keyframes pulse { 
-      0%, 100% { opacity: 1; transform: scale(1); } 
-      50% { opacity: 0.6; transform: scale(0.95); } 
-    }
-    
-    /* 模擬器中雪球樣式 */
+    /* 模擬器雪球 */
     .sim-ball {
       position: absolute;
-      width: 12px;
-      height: 12px;
+      width: 14px; height: 14px;
       border-radius: 50%;
-      background: #ffffff;
-      box-shadow: 0 0 4px rgba(255,255,255,0.8);
-      transition: background-color 0.2s, box-shadow 0.2s;
+      background: radial-gradient(circle at 35% 35%, #fff, #ccc);
+      box-shadow: 0 0 6px rgba(255,255,255,0.9), 0 0 12px rgba(255,255,255,0.3);
+      transition: background 0.25s, box-shadow 0.25s;
     }
     .sim-ball.charged {
-      background: var(--accent2);
-      box-shadow: 0 0 8px var(--accent2);
+      background: radial-gradient(circle at 35% 35%, #81d4fa, #039be5);
+      box-shadow: 0 0 10px var(--accent2), 0 0 20px rgba(79,195,247,0.4);
+    }
+
+    /* ============================================
+       通用佈局輔助
+       ============================================ */
+    .slide-body-text {
+      font-size: 0.56em;
+      line-height: 1.7;
+      color: var(--text-primary);
+    }
+    .slide-body-text strong { color: #fff; }
+    .info-callout {
+      padding: 14px 18px;
+      border-radius: 10px;
+      font-size: 0.54em;
+      line-height: 1.6;
+      color: var(--text-secondary);
+    }
+    .info-callout strong { color: #fff; }
+    .info-callout.blue {
+      background: rgba(79,195,247,0.1);
+      border-left: 4px solid var(--accent2);
+    }
+    .info-callout.amber {
+      background: rgba(255,167,38,0.08);
+      border-left: 4px solid var(--warn);
+      color: var(--warn);
+    }
+
+    /* 互動按鈕 */
+    .btn-primary {
+      padding: 10px 16px;
+      background: linear-gradient(135deg, var(--accent2), #29b6f6);
+      color: #0a0e17;
+      border: none; border-radius: 8px;
+      font-weight: 700; font-size: 14px;
+      cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.3s;
+      box-shadow: 0 4px 15px var(--glow-blue);
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 25px var(--glow-blue); }
+    .btn-primary:active { transform: translateY(0px); }
+    .btn-primary.orange {
+      background: linear-gradient(135deg, var(--accent), #ff9a6c);
+      box-shadow: 0 4px 15px var(--glow-orange);
+    }
+    .btn-primary.orange:hover { box-shadow: 0 6px 25px var(--glow-orange); }
+
+    /* 自訂 range slider */
+    input[type="range"] {
+      -webkit-appearance: none; appearance: none;
+      width: 100%; height: 8px;
+      background: linear-gradient(90deg, rgba(255,107,61,0.3), rgba(79,195,247,0.5));
+      border-radius: 4px; outline: none;
+    }
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none; appearance: none;
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent2), #29b6f6);
+      box-shadow: 0 0 10px var(--glow-blue);
+      cursor: pointer;
+    }
+
+    /* 成功提示 */
+    .wc-toast {
+      position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+      background: linear-gradient(135deg, var(--success), #43a047);
+      color: #fff; padding: 10px 24px; border-radius: 10px;
+      font-size: 14px; font-weight: 700; z-index: 9999;
+      box-shadow: 0 4px 20px rgba(102,187,106,0.5);
+      animation: toast-in 0.3s ease-out;
+      pointer-events: none;
+    }
+    @keyframes toast-in {
+      from { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+      to   { opacity: 1; transform: translateX(-50%) translateY(0); }
     }
   </style>
 </head>
@@ -250,354 +358,330 @@
 <div class="reveal">
   <div class="slides">
 
-    <!-- Slide 1: 封面 -->
+    <!-- ========================================
+         Slide 1: 封面
+         ======================================== -->
     <section data-background-image="images/cover.png"
-             data-background-opacity="0.35"
+             data-background-opacity="0.4"
              data-background-size="cover">
-      <div class="title-slide glass-card" style="max-width: 800px; margin: 0 auto;">
+      <div class="title-slide glass-card" style="max-width: 820px; margin: 0 auto; animation: float 4s ease-in-out infinite;">
         <div class="tag">⚡ 科學探索主題課程 ❄️</div>
-        <h1>靜電飛雪大探險</h1>
-        <h3 style="color: var(--accent2); margin-top: 0.1em; font-size: 1.0em;">摩擦起電與靜電感應的魔法旅程</h3>
+        <h1 style="margin-bottom: 0.15em;">靜電飛雪大探險</h1>
+        <h3 style="color: var(--accent); margin-top: 0.1em; font-size: 1.05em; text-shadow: 0 0 20px var(--glow-orange);">摩擦起電與靜電感應的魔法旅程</h3>
         <p class="subtitle">探索微小電荷精靈的物理學奧秘</p>
         <p class="author">適合年級：國小 1 ~ 6 年級 | 講師：小小科學引導員</p>
       </div>
     </section>
 
-    <!-- Slide 2: 生活中的小發現 (Wordcloud) -->
+    <!-- ========================================
+         Slide 2: 生活中的小發現 (Wordcloud)
+         ======================================== -->
     <section id="slide-wordcloud">
-      <h2>生活中的小發現</h2>
-      <div style="display:grid; grid-template-columns: 260px 1fr; gap: 16px; height: 460px;">
-        <!-- 左欄：輸入與統計 -->
-        <div style="display:flex; flex-direction:column; gap:10px; text-align: left;">
-          <div class="glass-card" style="padding: 12px;">
-            <div style="font-size:0.38em; color:var(--accent2); font-weight:700; margin-bottom:6px;">你在哪裡遇過靜電？</div>
+      <h2>🔍 生活中的小發現</h2>
+      <div style="display:grid; grid-template-columns: 290px 1fr; gap: 18px; height: 460px;">
+        <!-- 左欄 -->
+        <div style="display:flex; flex-direction:column; gap:12px; text-align: left;">
+          <div class="glass-card" style="padding: 16px;">
+            <div style="font-size:0.5em; color:var(--accent2); font-weight:700; margin-bottom:10px;">💬 你在哪裡遇過靜電？</div>
             <input id="wc-input" type="text" placeholder="例：梳頭髮、摸門把、脫毛衣…" maxlength="20"
-              style="width:100%; padding:8px 10px; border-radius:6px; border:1px solid rgba(79,195,247,0.3);
-                     background:rgba(255,255,255,0.08); color:#fff; font-size:12px;
-                     box-sizing:border-box; font-family:inherit; outline:none;" />
-            <button id="wc-btn"
-              style="width:100%; margin-top:6px; padding:8px; background:var(--accent2); color:#0d1117;
-                     border:none; border-radius:6px; font-weight:700; font-size:12px; cursor:pointer;">
+              style="width:100%; padding:10px 14px; border-radius:8px; border:2px solid rgba(79,195,247,0.3);
+                     background:rgba(255,255,255,0.1); color:#fff; font-size:14px;
+                     box-sizing:border-box; font-family:inherit; outline:none; transition: border-color 0.3s;" />
+            <button id="wc-btn" class="btn-primary" style="width:100%; margin-top:10px;" onclick="window.wcSubmit && window.wcSubmit()">
               送出答案 ↵
             </button>
+            <div id="wc-status" style="font-size:0.42em; color:var(--success); text-align:center; margin-top:6px; min-height:1.2em;"></div>
           </div>
-          <div class="glass-card" style="padding: 12px; flex:1; overflow:hidden; display:flex; flex-direction:column;">
-            <div style="font-size:0.38em; color:var(--accent2); font-weight:700; margin-bottom:6px;">
-              熱門答案排行
-              <span style="display:inline-block; background:#ff4757; color:#fff; padding:1px 6px;
-                           border-radius:10px; font-size:0.8em; font-weight: bold; margin-left:5px; animation:pulse 1.5s infinite;">LIVE</span>
+          <div class="glass-card" style="padding: 14px; flex:1; overflow:hidden; display:flex; flex-direction:column;">
+            <div style="font-size:0.48em; color:var(--accent2); font-weight:700; margin-bottom:8px; display:flex; align-items:center; gap:6px;">
+              🏆 熱門答案排行
+              <span style="display:inline-block; background:#ff4757; color:#fff; padding:2px 8px;
+                           border-radius:10px; font-size:0.8em; font-weight: bold; animation:pulse 1.5s infinite;">LIVE</span>
             </div>
-            <div id="wc-list" style="font-size:0.34em; overflow-y:auto; flex:1; color:#ccc;">
-              <div style="color:#555;padding:8px 0;text-align:center;">載入中…</div>
+            <div id="wc-list" style="font-size:0.44em; overflow-y:auto; flex:1; color:var(--text-secondary);">
+              <div style="color:#667;padding:12px 0;text-align:center;">等待第一位同學的答案…</div>
             </div>
-            <div style="margin-top:6px; font-size:0.32em; color:#888; border-top:1px solid rgba(255,255,255,0.08); padding-top:4px;">
-              總計：<span id="wc-total" style="color:var(--accent); font-weight:700;">0</span> 筆 | 
+            <div style="margin-top:8px; font-size:0.4em; color:#889; border-top:1px solid rgba(255,255,255,0.1); padding-top:6px;">
+              總計：<span id="wc-total" style="color:var(--accent); font-weight:700;">0</span> 筆 |
               不重複：<span id="wc-unique" style="color:var(--accent2); font-weight:700;">0</span> 種
             </div>
           </div>
         </div>
 
-        <!-- 右欄：文字雲顯示 -->
-        <div class="glass-card" style="padding: 0; overflow:hidden; position:relative; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.2);">
+        <!-- 右欄：文字雲 -->
+        <div class="glass-card" style="padding: 0; overflow:hidden; position:relative; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.3); animation: glow-border 3s ease-in-out infinite;">
           <canvas id="wc-canvas" style="width: 100%; height: 100%; display:block;"></canvas>
-          <div id="wc-empty" style="position:absolute; color:#666; font-size:0.42em; text-align:center; pointer-events:none; line-height:2;">
-            ✨ 輸入第一個答案，即時文字雲就會在此顯示！ ✨
+          <div id="wc-empty" style="position:absolute; color:#778; font-size:0.55em; text-align:center; pointer-events:none; line-height:2.2;">
+            ✨ 輸入第一個答案<br>即時文字雲就會在此顯示！ ✨
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Slide 3: 神奇的電荷精靈 -->
+    <!-- ========================================
+         Slide 3: 神奇的電荷精靈
+         ======================================== -->
     <section>
-      <h2>神奇的電荷精靈</h2>
-      <div style="text-align: left; font-size: 0.45em; line-height: 1.6; margin-bottom: 15px;">
-        我們的世界萬物身上都藏著微小的「<strong>電荷精靈</strong>」，它們是組成一切物體的基礎！
+      <h2>⚛️ 神奇的電荷精靈</h2>
+      <div class="slide-body-text" style="margin-bottom: 14px; text-align: center;">
+        我們的世界萬物身上都藏著微小的「<strong style="color:var(--accent2);">電荷精靈</strong>」，它們是組成一切物體的基礎！
       </div>
       <div class="adv-grid-3">
-        <!-- 萬物組成 -->
         <div class="adv-card">
           <div class="adv-icon"><img src="images/icon_atom.png" alt="原子"></div>
           <div class="adv-title">原子結構</div>
-          <div class="adv-desc">所有物體（衣服、水杯、氣球、人類）都是由極小的原子組成的。</div>
+          <div class="adv-desc">所有物體（衣服、水杯、氣球、人類）都是由極小的<strong>原子</strong>組成的。</div>
         </div>
-        <!-- 正電荷 -->
         <div class="adv-card orange-theme">
           <div class="adv-icon"><img src="images/icon_plus.png" alt="正電荷"></div>
-          <div class="adv-title" style="color: var(--accent);">正電荷精靈 (+)</div>
-          <div class="adv-desc">代表正面、熱情。它們在原子核內部非常穩定，通常待在原地不動。</div>
+          <div class="adv-title">正電荷精靈 (+)</div>
+          <div class="adv-desc">代表正面、熱情。住在原子核內部非常<strong>穩定</strong>，通常待在原地不動。</div>
         </div>
-        <!-- 負電荷 -->
         <div class="adv-card">
           <div class="adv-icon"><img src="images/icon_minus.png" alt="負電荷"></div>
           <div class="adv-title">負電荷精靈 (-)</div>
-          <div class="adv-desc">非常調皮的電子！它們在原子外圍，極其活躍，很容易在物體之間跑來跑去。</div>
+          <div class="adv-desc">非常調皮的<strong>電子</strong>！在原子外圍極其活躍，容易在物體間跑來跑去。</div>
         </div>
       </div>
-      <div class="glass-card" style="margin-top: 15px; padding: 10px 20px; font-size: 0.4em; color: #aaa;">
+      <div class="info-callout blue" style="margin-top: 14px;">
         💡 正常狀態下，物體內的<strong>正電荷</strong>和<strong>負電荷</strong>數量一樣多，物體保持平衡（稱為<strong>中性</strong>）。
       </div>
     </section>
 
-    <!-- Slide 4: 電子的拔河比賽 -->
+    <!-- ========================================
+         Slide 4: 電子的拔河比賽 (摩擦起電 VIZ)
+         ======================================== -->
     <section id="slide-friction">
-      <h2>電子的拔河比賽 (摩擦起電)</h2>
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: center; height: 460px;">
-        <!-- 左欄：說明 -->
-        <div style="text-align: left; font-size: 0.42em; line-height: 1.6;">
-          <h3 style="font-size: 1.1em; color: var(--accent2); margin-bottom: 12px;">摩擦讓調皮的電子搬家了！</h3>
-          <ul>
-            <li><strong style="color: var(--accent2);">搶電子大戰：</strong> 氣球和羊毛衣摩擦時，氣球對電子的吸引力比較強，會強行搶走毛衣身上的<strong>負電荷(-)</strong>！</li>
-            <li style="margin-top: 8px;"><strong style="color: var(--accent2);">氣球帶負電：</strong> 氣球搶到了超多負電荷，變身為<strong>帶負電</strong>的物體。</li>
-            <li style="margin-top: 8px;"><strong style="color: var(--accent);">毛衣帶正電：</strong> 毛衣失去了負電荷，留下落單的<strong>正電荷(+)</strong>，帶正電。</li>
+      <h2>🎈 電子的拔河比賽 (摩擦起電)</h2>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 22px; align-items: stretch; height: 460px;">
+        <!-- 左欄 -->
+        <div class="slide-body-text" style="display: flex; flex-direction: column; justify-content: center;">
+          <h3 style="margin-bottom: 14px;">摩擦讓調皮的電子搬家了！</h3>
+          <ul style="list-style: none; padding: 0;">
+            <li style="margin-bottom: 10px;">⚡ <strong style="color:var(--accent2);">搶電子大戰：</strong>氣球和羊毛衣摩擦時，氣球對電子的吸引力較強，會搶走毛衣身上的<strong>負電荷(-)</strong>！</li>
+            <li style="margin-bottom: 10px;">🎈 <strong style="color:var(--accent2);">氣球帶負電：</strong>氣球搶到超多負電荷，變成<strong>帶負電</strong>物體。</li>
+            <li style="margin-bottom: 10px;">🧣 <strong style="color:var(--accent);">毛衣帶正電：</strong>毛衣失去負電荷，留下落單的<strong>正電荷(+)</strong>。</li>
           </ul>
-          <div style="margin-top: 15px; padding: 10px; background: rgba(79,195,247,0.08); border-radius: 8px; border-left: 4px solid var(--accent2);">
-            💡 <strong>靜電物理定律：</strong><br>
-            • <strong>同性相斥</strong> (正正/負負相撞會推開)<br>
-            • <strong>異性相吸</strong> (正電與負電會緊緊吸在一起！)
+          <div class="info-callout blue" style="margin-top: 10px;">
+            💡 <strong>靜電定律：</strong><br>
+            • <strong>同性相斥</strong> → 正正/負負 會推開<br>
+            • <strong>異性相吸</strong> → 正電與負電 緊緊吸在一起！
           </div>
         </div>
-        <!-- 右欄：滑桿視覺化演示 -->
-        <div class="glass-card" style="display: flex; flex-direction: column; justify-content: space-between; height: 100%; box-sizing: border-box;">
-          <div style="font-size: 0.42em; color: #ccc; text-align: center;">
-            拖動滑桿模擬「摩擦起電」電荷轉移
+        <!-- 右欄：互動演示 -->
+        <div class="glass-card" style="display: flex; flex-direction: column; justify-content: space-between; box-sizing: border-box;">
+          <div style="font-size: 0.52em; color: var(--text-secondary); text-align: center; font-weight: 600;">
+            🎛️ 拖動滑桿模擬「摩擦起電」電荷轉移
           </div>
-          <!-- 模擬面板 -->
-          <div id="friction-playground" style="position: relative; flex: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 15px; align-items: center; min-height: 200px;">
-            <!-- Wool sweater -->
-            <div style="position: relative; height: 160px; background: rgba(232,100,58,0.05); border: 2px dashed rgba(232,100,58,0.25); border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-              <div style="font-size: 0.45em; color: var(--accent); font-weight: bold; position: absolute; top: 6px;">羊毛衣 (易失電子)</div>
-              <img src="images/icon_wool.png" style="width: 70px; height: 70px; opacity: 0.85; filter: drop-shadow(0 0 10px rgba(232,100,58,0.3));">
+          <div id="friction-playground" style="position: relative; flex: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 14px; align-items: center; min-height: 180px; margin: 10px 0;">
+            <div style="position: relative; height: 160px; background: rgba(255,107,61,0.06); border: 2px dashed rgba(255,107,61,0.3); border-radius: 14px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+              <div style="font-size: 0.52em; color: var(--accent); font-weight: 700; position: absolute; top: 8px;">🧣 羊毛衣</div>
+              <img src="images/icon_wool.png" style="width: 72px; height: 72px; opacity: 0.9; filter: drop-shadow(0 0 12px var(--glow-orange));">
             </div>
-            <!-- Balloon -->
-            <div style="position: relative; height: 160px; background: rgba(79,195,247,0.05); border: 2px dashed rgba(79,195,247,0.25); border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-              <div style="font-size: 0.45em; color: var(--accent2); font-weight: bold; position: absolute; top: 6px;">塑膠氣球 (易得電子)</div>
-              <img src="images/icon_balloon.png" style="width: 70px; height: 70px; opacity: 0.85; filter: drop-shadow(0 0 10px rgba(79,195,247,0.3));">
+            <div style="position: relative; height: 160px; background: rgba(79,195,247,0.06); border: 2px dashed rgba(79,195,247,0.3); border-radius: 14px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+              <div style="font-size: 0.52em; color: var(--accent2); font-weight: 700; position: absolute; top: 8px;">🎈 塑膠氣球</div>
+              <img src="images/icon_balloon.png" style="width: 72px; height: 72px; opacity: 0.9; filter: drop-shadow(0 0 12px var(--glow-blue));">
             </div>
-            
-            <!-- Dynamic charges rendered here by JS -->
             <div id="charge-container" style="position: absolute; inset: 0; pointer-events: none;"></div>
           </div>
-          <!-- 滑桿 -->
-          <div style="margin-top: 10px;">
-            <input id="friction-slider" type="range" min="0" max="100" value="0" style="width: 100%; cursor: pointer;">
-            <div style="display: flex; justify-content: space-between; font-size: 0.35em; color: #888; margin-top: 2px;">
-              <span>中性平衡 (0%)</span>
-              <span>摩擦起電中...</span>
-              <span>完全帶電 (100%)</span>
+          <div>
+            <input id="friction-slider" type="range" min="0" max="100" value="0">
+            <div style="display: flex; justify-content: space-between; font-size: 0.42em; color: #889; margin-top: 4px;">
+              <span>中性平衡</span>
+              <span style="color: var(--warn);">⚡ 摩擦中 ⚡</span>
+              <span>完全帶電</span>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Slide 5: 隔空吸物的魔法 (Induction) -->
+    <!-- ========================================
+         Slide 5: 靜電感應
+         ======================================== -->
     <section data-background-image="images/induction.png"
-             data-background-opacity="0.2"
+             data-background-opacity="0.22"
              data-background-size="cover">
-      <h2>隔空吸物的魔法 (靜電感應)</h2>
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: center; height: 460px;">
-        <!-- 左欄：說明 -->
-        <div style="text-align: left; font-size: 0.45em; line-height: 1.6;">
-          <h3 style="font-size: 1.1em; color: var(--accent2); margin-bottom: 12px;">不用碰觸，就能隔空吸引？</h3>
-          <p>當帶負電的氣球慢慢靠近飛雪罐（內有中性小雪球）時：</p>
-          <ol>
-            <li style="margin-top: 8px;"><strong>電荷大移動：</strong> 雪球裡原本均勻混合的正、負電荷精靈開始發生移動。</li>
-            <li style="margin-top: 8px;"><strong>正電被吸引：</strong> 根據「異性相吸」，雪球靠近氣球那一面的<strong>正電荷(+)</strong>會被吸過去。</li>
-            <li style="margin-top: 8px;"><strong>負電被排斥：</strong> 根據「同性相斥」，雪球內部的<strong>負電荷(-)</strong>會被推到另一邊。</li>
-            <li style="margin-top: 8px;"><strong>產生吸引力：</strong> 靠近氣球那一面由於正負電相吸，小雪球就被<strong>隔空吸飛</strong>，黏在罐壁上了！</li>
+      <h2>🧲 隔空吸物的魔法 (靜電感應)</h2>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 22px; align-items: stretch; height: 460px;">
+        <div class="slide-body-text" style="display: flex; flex-direction: column; justify-content: center;">
+          <h3 style="margin-bottom: 14px;">不用碰觸，就能隔空吸引？</h3>
+          <p style="margin-bottom: 10px;">帶負電的氣球靠近飛雪罐（裝著中性小雪球）時：</p>
+          <ol style="padding-left: 1.2em;">
+            <li style="margin-bottom: 8px;"><strong style="color:var(--accent2);">電荷大移動：</strong>雪球裡的正負電荷精靈開始移動！</li>
+            <li style="margin-bottom: 8px;"><strong style="color:var(--accent);">正電被吸引：</strong>異性相吸 → 正電荷(+)移向氣球方向。</li>
+            <li style="margin-bottom: 8px;"><strong style="color:var(--accent2);">負電被排斥：</strong>同性相斥 → 負電荷(-)被推到另一邊。</li>
+            <li><strong style="color:var(--warn);">產生吸引力：</strong>靠近氣球那一面聚集了正電荷，雪球被<strong>隔空吸飛</strong>！</li>
           </ol>
         </div>
-        <!-- 右欄：演示圖卡 -->
-        <div class="glass-card" style="text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%; box-sizing: border-box;">
-          <div style="font-size: 0.5em; font-weight: bold; color: var(--accent2); margin-bottom: 15px;">「靜電感應」極化示意圖</div>
-          
-          <svg width="280" height="200" viewBox="0 0 280 200" style="background: rgba(0,0,0,0.2); border-radius: 8px; border: 1px solid rgba(255,255,255,0.05);">
-            <!-- Balloon on left (negative) -->
-            <path d="M 10 70 Q 10 30, 50 30 Q 90 30, 90 70 Q 90 110, 50 110 Q 10 110, 10 70 Z" fill="#4fc3f7" opacity="0.3" stroke="#4fc3f7" stroke-width="2"/>
-            <text x="35" y="75" fill="#fff" font-size="14" font-weight="bold">氣球</text>
-            <text x="75" y="55" fill="#4fc3f7" font-size="18" font-weight="bold">-</text>
-            <text x="75" y="75" fill="#4fc3f7" font-size="18" font-weight="bold">-</text>
-            <text x="75" y="95" fill="#4fc3f7" font-size="18" font-weight="bold">-</text>
-            
-            <!-- Attraction Arrows -->
-            <path d="M 110 70 L 150 70" stroke="#ffb74d" stroke-width="3" stroke-dasharray="4,4" fill="none"/>
-            <path d="M 145 65 L 155 70 L 145 75 Z" fill="#ffb74d"/>
-            <text x="110" y="55" fill="#ffb74d" font-size="10">引力</text>
-            
-            <!-- Snowball (polarized) -->
-            <circle cx="210" cy="70" r="45" fill="rgba(255,255,255,0.15)" stroke="#fff" stroke-dasharray="2,2"/>
-            <text x="195" y="75" fill="#fff" font-size="12">雪球</text>
-            
+        <div class="glass-card" style="text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center; box-sizing: border-box;">
+          <div style="font-size: 0.58em; font-weight: 700; color: var(--accent2); margin-bottom: 18px;">「靜電感應」極化示意圖</div>
+          <svg width="320" height="200" viewBox="0 0 320 200" style="background: rgba(0,0,0,0.25); border-radius: 12px; border: 1px solid rgba(79,195,247,0.1);">
+            <!-- Balloon -->
+            <path d="M 12 70 Q 12 28, 55 28 Q 98 28, 98 70 Q 98 112, 55 112 Q 12 112, 12 70 Z" fill="rgba(79,195,247,0.15)" stroke="#4fc3f7" stroke-width="2"/>
+            <text x="36" y="66" fill="#e0e8f0" font-size="12" font-weight="700" font-family="Noto Sans TC, sans-serif">氣球</text>
+            <text x="38" y="82" fill="#81d4fa" font-size="10" font-family="Noto Sans TC, sans-serif">(帶負電)</text>
+            <text x="82" y="52" fill="#4fc3f7" font-size="20" font-weight="900">−</text>
+            <text x="82" y="74" fill="#4fc3f7" font-size="20" font-weight="900">−</text>
+            <text x="82" y="96" fill="#4fc3f7" font-size="20" font-weight="900">−</text>
+            <!-- Arrow -->
+            <line x1="118" y1="70" x2="158" y2="70" stroke="#ffa726" stroke-width="3" stroke-dasharray="5,4"/>
+            <polygon points="155,63 168,70 155,77" fill="#ffa726"/>
+            <text x="118" y="55" fill="#ffa726" font-size="11" font-weight="600" font-family="Noto Sans TC, sans-serif">引力</text>
+            <!-- Snowball -->
+            <circle cx="230" cy="70" r="50" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.3)" stroke-dasharray="3,3"/>
+            <text x="213" y="73" fill="#e0e8f0" font-size="12" font-weight="700" font-family="Noto Sans TC, sans-serif">雪球</text>
             <!-- Polarized charges -->
-            <!-- Left side of snowball gets positive charges -->
-            <circle cx="180" cy="50" r="7" fill="var(--accent)"/>
-            <text x="177" y="54" fill="#fff" font-size="10" font-weight="bold">+</text>
-            <circle cx="175" cy="70" r="7" fill="var(--accent)"/>
-            <text x="172" y="74" fill="#fff" font-size="10" font-weight="bold">+</text>
-            <circle cx="180" cy="90" r="7" fill="var(--accent)"/>
-            <text x="177" y="94" fill="#fff" font-size="10" font-weight="bold">+</text>
-            
-            <!-- Right side of snowball gets negative charges -->
-            <circle cx="240" cy="50" r="7" fill="var(--accent2)"/>
-            <text x="238" y="53" fill="#fff" font-size="10" font-weight="bold">-</text>
-            <circle cx="245" cy="70" r="7" fill="var(--accent2)"/>
-            <text x="243" y="73" fill="#fff" font-size="10" font-weight="bold">-</text>
-            <circle cx="240" cy="90" r="7" fill="var(--accent2)"/>
-            <text x="238" y="93" fill="#fff" font-size="10" font-weight="bold">-</text>
+            <circle cx="195" cy="48" r="9" fill="var(--accent)"/>
+            <text x="191" y="53" fill="#fff" font-size="13" font-weight="900">+</text>
+            <circle cx="190" cy="72" r="9" fill="var(--accent)"/>
+            <text x="186" y="77" fill="#fff" font-size="13" font-weight="900">+</text>
+            <circle cx="195" cy="95" r="9" fill="var(--accent)"/>
+            <text x="191" y="100" fill="#fff" font-size="13" font-weight="900">+</text>
+            <circle cx="265" cy="48" r="9" fill="#29b6f6"/>
+            <text x="262" y="52" fill="#fff" font-size="13" font-weight="900">−</text>
+            <circle cx="270" cy="72" r="9" fill="#29b6f6"/>
+            <text x="267" y="76" fill="#fff" font-size="13" font-weight="900">−</text>
+            <circle cx="265" cy="95" r="9" fill="#29b6f6"/>
+            <text x="262" y="99" fill="#fff" font-size="13" font-weight="900">−</text>
           </svg>
-          
-          <div style="font-size: 0.38em; color: #aaa; margin-top: 15px; line-height: 1.5; text-align: left;">
-            當帶負電的氣球靠近時，雪球左側聚集<strong>正電荷(+)</strong>，右側聚集<strong>負電荷(-)</strong>。因為正電荷離氣球較近，吸引力大於排斥力，雪球便被吸過去了。
+          <div style="font-size: 0.46em; color: var(--text-secondary); margin-top: 14px; line-height: 1.6; text-align: left; padding: 0 8px;">
+            氣球靠近時，雪球左側聚集 <strong style="color:var(--accent);">正電荷(+)</strong>，右側聚集 <strong style="color:var(--accent2);">負電荷(-)</strong>。因為正電荷離氣球較近，吸引力大於排斥力，雪球便被隔空吸過去了。
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Slide 6: 雪球的踢踏舞 (Attraction & Repulsion Simulator) -->
+    <!-- ========================================
+         Slide 6: 雪球的踢踏舞 (模擬器)
+         ======================================== -->
     <section id="slide-simulator">
-      <h2>雪球的踢踏舞 (吸附與相斥)</h2>
-      <div style="display: grid; grid-template-columns: 1fr 1.1fr; gap: 20px; align-items: center; height: 460px;">
-        <!-- 左欄：物理循環說明 -->
-        <div style="text-align: left; font-size: 0.42em; line-height: 1.6;">
-          <h3 style="font-size: 1.15em; color: var(--accent2); margin-bottom: 10px;">雪球起飛的物理三部曲</h3>
-          <div class="glass-card" style="padding: 10px; margin-bottom: 8px; border-left: 4px solid var(--accent2);">
-            <strong style="color: var(--accent2);">1. 靠近吸附：</strong> 氣球靠近時，雪球因為「靜電感應」被隔空吸上罐壁。
+      <h2>❄️ 雪球的踢踏舞 (吸附與相斥)</h2>
+      <div style="display: grid; grid-template-columns: 1fr 1.15fr; gap: 22px; align-items: stretch; height: 460px;">
+        <!-- 左欄 -->
+        <div style="display: flex; flex-direction: column; gap: 10px; justify-content: center;">
+          <div style="font-size: 0.56em; font-weight: 700; color: var(--accent2); margin-bottom: 4px;">雪球起飛的物理三部曲</div>
+          <div class="glass-card" style="padding: 12px 16px; border-left: 4px solid var(--accent2); font-size: 0.52em; color: var(--text-secondary); line-height: 1.6;">
+            <strong style="color:var(--accent2);">1. 靠近吸附</strong><br>氣球靠近 → 雪球因「靜電感應」被隔空吸到罐壁。
           </div>
-          <div class="glass-card" style="padding: 10px; margin-bottom: 8px; border-left: 4px solid var(--warn);">
-            <strong style="color: var(--warn);">2. 接觸傳電：</strong> 雪球與罐壁接觸，分享了來自氣球的負電，雪球瞬間<strong>也帶負電</strong>。
+          <div class="glass-card" style="padding: 12px 16px; border-left: 4px solid var(--warn); font-size: 0.52em; color: var(--text-secondary); line-height: 1.6;">
+            <strong style="color:var(--warn);">2. 接觸傳電</strong><br>雪球與罐壁接觸 → 分享了氣球的負電 → 雪球變成<strong>帶負電</strong>。
           </div>
-          <div class="glass-card" style="padding: 10px; border-left: 4px solid var(--accent);">
-            <strong style="color: var(--accent);">3. 同電相斥：</strong> 因「同性相斥」，帶負電的雪球被大力彈開，落到底部將電中和（接地），重新變回中性並再次被吸起！
+          <div class="glass-card" style="padding: 12px 16px; border-left: 4px solid var(--accent); font-size: 0.52em; color: var(--text-secondary); line-height: 1.6;">
+            <strong style="color:var(--accent);">3. 同電相斥</strong><br>氣球(-) & 雪球(-) → 同性相斥彈開 → 落地接地中和 → 循環再起！
           </div>
         </div>
-        <!-- 右欄：物理模擬器 -->
-        <div class="glass-card" style="display: flex; flex-direction: column; justify-content: space-between; height: 100%; box-sizing: border-box; background: rgba(0,0,0,0.25);">
-          <div style="font-size: 0.45em; color: var(--accent2); font-weight: bold; text-align: center; margin-bottom: 5px; display: flex; justify-content: center; align-items: center; gap: 5px;">
-            ❄️ 靜電飛雪罐物理模擬器 
-            <span style="display:inline-block; background:var(--success); color:#0d1117; padding:1px 5px; border-radius:4px; font-size:0.7em;">可互動</span>
+        <!-- 右欄：模擬器 -->
+        <div class="glass-card" style="display: flex; flex-direction: column; justify-content: space-between; box-sizing: border-box; background: rgba(5,8,18,0.85);">
+          <div style="font-size: 0.52em; color: var(--accent2); font-weight: 700; text-align: center; display: flex; justify-content: center; align-items: center; gap: 6px;">
+            ❄️ 靜電飛雪罐物理模擬器
+            <span style="display:inline-block; background:var(--success); color:#0a0e17; padding:2px 8px; border-radius:6px; font-size:0.75em; font-weight: 700;">可互動</span>
           </div>
-          <!-- 模擬罐子 -->
-          <div id="sim-jar" style="position: relative; flex: 1; border: 2px solid rgba(255,255,255,0.18); border-radius: 12px; overflow: hidden; background: radial-gradient(circle at center, rgba(255,255,255,0.02) 0%, rgba(0,0,0,0.5) 100%); min-height: 240px;">
-            <!-- 氣球 (移入/移出) -->
-            <div id="sim-balloon" style="position: absolute; right: -50px; top: 15%; width: 80px; height: 110px; background: radial-gradient(circle at 25px 35px, #ff7043, #d84315); border-radius: 50% 50% 45% 45%; opacity: 0.2; transition: right 0.5s, opacity 0.5s; box-shadow: 0 0 20px rgba(232,100,58,0.2); pointer-events: none; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #fff;">
-              <div style="font-size: 28px; text-shadow: 0 0 4px #000; margin-right: 15px;">-</div>
+          <div id="sim-jar" style="position: relative; flex: 1; border: 2px solid rgba(255,255,255,0.2); border-radius: 14px; overflow: hidden; background: radial-gradient(ellipse at center bottom, rgba(79,195,247,0.04) 0%, rgba(0,0,0,0.5) 100%); min-height: 220px; margin: 8px 0;">
+            <div id="sim-balloon" style="position: absolute; right: -55px; top: 12%; width: 85px; height: 115px; background: radial-gradient(circle at 28px 38px, #ff7043, #bf360c); border-radius: 50% 50% 45% 45%; opacity: 0.15; transition: right 0.5s ease, opacity 0.5s ease; box-shadow: 0 0 30px rgba(232,100,58,0.15); pointer-events: none; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #fff;">
+              <div style="font-size: 32px; text-shadow: 0 0 8px #000; margin-right: 18px;">−</div>
             </div>
-            
-            <!-- 接地底座 -->
-            <div style="position: absolute; bottom: 0; left: 0; right: 0; height: 6px; background: rgba(255,255,255,0.15); border-top: 1px solid rgba(255,255,255,0.3);"></div>
-            
-            <!-- 雪球容器 -->
+            <div style="position: absolute; bottom: 0; left: 0; right: 0; height: 8px; background: linear-gradient(to right, rgba(255,255,255,0.1), rgba(79,195,247,0.15), rgba(255,255,255,0.1)); border-top: 1px solid rgba(255,255,255,0.25);"></div>
             <div id="sim-snowballs-container" style="position: absolute; inset: 0;"></div>
           </div>
-          <!-- 操控按鈕 -->
-          <div style="display: flex; gap: 10px; margin-top: 10px;">
-            <button id="btn-sim-toggle" onclick="toggleSimBalloon()" 
-              style="flex: 1; padding: 8px; background: var(--accent2); color: #0d1117; border: none; border-radius: 6px; font-weight: 700; font-size: 13px; cursor: pointer; transition: background 0.3s, transform 0.1s;">
-              靠近帶電氣球
-            </button>
-            <button onclick="resetSim()" 
-              style="padding: 8px 12px; background: rgba(255,255,255,0.08); color: #fff; border: 1px solid rgba(255,255,255,0.15); border-radius: 6px; font-size: 13px; cursor: pointer; transition: background 0.3s;">
-              重設
-            </button>
+          <div style="display: flex; gap: 10px;">
+            <button id="btn-sim-toggle" class="btn-primary" style="flex: 1;" onclick="toggleSimBalloon()">靠近帶電氣球 🎈</button>
+            <button class="btn-primary orange" style="padding: 10px 14px;" onclick="resetSim()">重設</button>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Slide 7: 道具結構大解密 -->
+    <!-- ========================================
+         Slide 7: 道具解密
+         ======================================== -->
     <section>
-      <h2>靜電飛雪罐大解密 (道具結構)</h2>
-      <div style="text-align: left; font-size: 0.45em; line-height: 1.6; margin-bottom: 15px;">
-        為什麼是保麗龍球？為什麼要用氣球？每個實驗道具都有不可替代的物理特性：
+      <h2>🔬 靜電飛雪罐大解密 (道具結構)</h2>
+      <div class="slide-body-text" style="margin-bottom: 14px; text-align: center;">
+        為什麼是保麗龍球？為什麼要用氣球？每個道具都有不可替代的物理特性：
       </div>
       <div class="adv-grid-4">
-        <!-- 羊毛衣 -->
         <div class="adv-card orange-theme">
           <div class="adv-icon"><img src="images/icon_wool.png" alt="羊毛衣"></div>
-          <div class="adv-title" style="color: var(--accent);">羊毛衣</div>
-          <div class="adv-desc">負責「摩擦」。它的電子極易脫落流失，是極佳的起電配合道具！</div>
+          <div class="adv-title">🧣 羊毛衣</div>
+          <div class="adv-desc">負責「摩擦」。電子極易脫落，是最佳的起電配合道具！</div>
         </div>
-        <!-- 塑膠氣球 -->
         <div class="adv-card">
           <div class="adv-icon"><img src="images/icon_balloon.png" alt="氣球"></div>
-          <div class="adv-title">塑膠氣球</div>
-          <div class="adv-desc">搶電子高手。摩擦後能牢牢鎖住大量的負電荷，作為靜電的魔法棒。</div>
+          <div class="adv-title">🎈 塑膠氣球</div>
+          <div class="adv-desc">搶電子高手。摩擦後能牢牢鎖住大量負電荷，作為靜電魔法棒。</div>
         </div>
-        <!-- 玻璃罐 -->
         <div class="adv-card orange-theme">
           <div class="adv-icon"><img src="images/icon_jar.png" alt="玻璃罐"></div>
-          <div class="adv-title" style="color: var(--accent);">玻璃罐</div>
-          <div class="adv-desc">提供密封空間。不讓雪球亂飛，且透明玻璃利於清晰觀察物理現象。</div>
+          <div class="adv-title">🫙 玻璃罐</div>
+          <div class="adv-desc">提供密封空間。透明玻璃利於觀察飛雪的物理現象。</div>
         </div>
-        <!-- 保麗龍球 -->
         <div class="adv-card">
           <div class="adv-icon"><img src="images/icon_styrofoam.png" alt="保麗龍球"></div>
-          <div class="adv-title">保麗龍球</div>
-          <div class="adv-desc">【最關鍵的配角】！重量極輕，重力影響極小，只需微弱靜電力就能飛舞！</div>
+          <div class="adv-title">❄️ 保麗龍球</div>
+          <div class="adv-desc"><strong style="color:var(--accent2);">最關鍵配角！</strong>極輕，微弱靜電力就能飛舞！</div>
         </div>
       </div>
     </section>
 
-    <!-- Slide 8: 科學小挑戰 (Poll) -->
+    <!-- ========================================
+         Slide 8: 科學小挑戰 (Poll)
+         ======================================== -->
     <section id="slide-poll">
-      <h2>科學小挑戰</h2>
-      <div style="text-align: left; font-size: 0.45em; line-height: 1.5; margin-bottom: 15px;">
-        🤔 <strong>動腦時間：</strong> 為什麼在下雨天或很潮濕的時候，靜電飛雪實驗很難成功呢？
+      <h2>🧠 科學小挑戰</h2>
+      <div class="slide-body-text" style="margin-bottom: 14px; text-align: center;">
+        🤔 <strong>動腦時間：</strong>為什麼下雨天或很潮濕的時候，靜電飛雪實驗很難成功？
       </div>
-      <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 20px; height: 400px; text-align: left;">
-        <!-- 左欄：投票按鈕 -->
+      <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 22px; height: 380px; text-align: left;">
         <div class="glass-card" style="display: flex; flex-direction: column; justify-content: space-between;">
-          <div id="poll-options" style="display:flex; flex-direction:column; gap:10px;">
-            <!-- 由 JS 動態生成選項 -->
-          </div>
-          <div style="font-size:0.35em; color:#888; text-align:center;">
-            已投票學員：<span id="poll-total" style="color:var(--accent); font-weight:700;">0</span> 人
+          <div id="poll-options" style="display:flex; flex-direction:column; gap:12px;"></div>
+          <div style="font-size:0.44em; color:#889; text-align:center; margin-top: 10px;">
+            已投票：<span id="poll-total" style="color:var(--accent); font-weight:700;">0</span> 人
           </div>
         </div>
-        <!-- 右欄：答案解析 -->
-        <div class="glass-card" style="display: flex; flex-direction: column; justify-content: center; font-size: 0.42em; line-height: 1.6; background: rgba(0,0,0,0.15);">
-          <div style="font-size: 1.15em; font-weight: bold; color: var(--accent2); margin-bottom: 8px;">💡 答案解密：</div>
-          <p style="margin: 0; color: #ccc;">
-            因為<strong>潮濕空氣中含有大量的水分子</strong>！<br><br>
-            水分子是微小導體，會把氣球上積聚的靜電荷<strong>慢慢導走並與空氣中和</strong>。這會使氣球「漏電」，靜電力太弱，保麗龍球自然就吸不起來了。
+        <div class="glass-card" style="display: flex; flex-direction: column; justify-content: center; font-size: 0.52em; line-height: 1.7; background: rgba(5,8,18,0.85);">
+          <div style="font-size: 1.1em; font-weight: 700; color: var(--accent2); margin-bottom: 10px;">💡 答案解密：</div>
+          <p style="margin: 0; color: var(--text-secondary);">
+            因為<strong style="color:#fff;">潮濕空氣中含有大量的水分子</strong>！<br><br>
+            水分子是微小導體，會把氣球積聚的靜電荷<strong style="color:#fff;">慢慢導走並與空氣中和</strong>。氣球「漏電」使靜電力太弱，保麗龍球就吸不起來了。
           </p>
-          <div style="margin-top: 15px; padding: 8px; border-radius: 6px; background: rgba(255,183,77,0.1); border: 1px solid rgba(255,183,77,0.2); color: var(--warn); font-size: 0.9em;">
-            ✨ 提示：若要在潮濕天氣做實驗，可以用吹風機將玻璃罐和氣球稍微吹乾喔！
+          <div class="info-callout amber" style="margin-top: 14px; font-size: 0.92em;">
+            ✨ 提示：若在潮濕天氣做實驗，可用吹風機將玻璃罐和氣球稍微吹乾喔！
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Slide 9: 結語與總結 -->
+    <!-- ========================================
+         Slide 9: 結語
+         ======================================== -->
     <section data-background-image="images/ending.png"
-             data-background-opacity="0.35"
+             data-background-opacity="0.38"
              data-background-size="cover">
-      <div class="title-slide glass-card" style="max-width: 850px; margin: 0 auto;">
-        <h2 style="color: var(--accent2); margin-bottom: 12px; border-bottom: none; padding-bottom: 0;">✨ 小小科學家，探索大世界！ ✨</h2>
-        <div style="text-align: left; font-size: 0.42em; line-height: 1.6; color: #ddd; margin-bottom: 15px;">
+      <div class="title-slide glass-card" style="max-width: 880px; margin: 0 auto;">
+        <h2 style="color: var(--accent2); margin-bottom: 14px; border-bottom: none; padding-bottom: 0; text-align: center;">✨ 小小科學家，探索大世界！ ✨</h2>
+        <div class="slide-body-text" style="margin-bottom: 16px; text-align: center;">
           今天我們一起解開了靜電魔法的三大秘密：
         </div>
-        
         <div class="conclusion-grid">
           <div class="conclusion-card positive">
             <div class="cc-title">三大核心定律</div>
             <ul>
-              <li><strong>摩擦起電：</strong> 電子轉移使氣球帶負電、毛衣帶正電。</li>
-              <li><strong>靜電感應：</strong> 帶電體靠近時，隔空極化並產生吸引力。</li>
-              <li><strong>相吸與相斥：</strong> 同電相斥、異電相吸，促成雪球飛舞。</li>
+              <li><strong>摩擦起電：</strong>電子轉移使氣球帶負電、毛衣帶正電。</li>
+              <li><strong>靜電感應：</strong>帶電體靠近時，隔空極化產生吸引力。</li>
+              <li><strong>相吸與相斥：</strong>同電相斥、異電相吸，促成雪球飛舞。</li>
             </ul>
           </div>
           <div class="conclusion-card caution">
             <div class="cc-title">保持探索的雙眼</div>
             <ul>
-              <li>科學不是死板的知識，它就隱藏在生活細節中。</li>
-              <li>梳頭飛舞、開門被電，全都是電荷精靈在施魔法。</li>
-              <li>保持好奇心，你也可以成為生活中的大科學家！</li>
+              <li>科學不是死板的知識，它隱藏在生活細節中。</li>
+              <li>梳頭飛舞、開門被電，都是電荷精靈的魔法。</li>
+              <li>保持好奇心，你也可以成為大科學家！</li>
             </ul>
           </div>
         </div>
-        
-        <h3 style="color: var(--accent); font-size: 0.85em; margin-top: 25px; text-align: center;">💡 謝謝大家，我們下堂課見！ 💡</h3>
+        <h3 style="color: var(--accent); font-size: 0.9em; margin-top: 24px; text-align: center; text-shadow: 0 0 20px var(--glow-orange);">💡 謝謝大家，我們下堂課見！ 💡</h3>
       </div>
     </section>
 
@@ -606,7 +690,6 @@
 
 <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
 <script>
-  // 初始化 Reveal.js
   Reveal.initialize({
     hash: true,
     transition: 'slide',
@@ -620,281 +703,172 @@
   });
 </script>
 
-<!-- === Slide 4: 摩擦起電互動 JS === -->
+<!-- ================================================================
+     Slide 4: 摩擦起電互動
+     ================================================================ -->
 <script>
-  (function() {
-    const slider = document.getElementById('friction-slider');
-    const container = document.getElementById('charge-container');
-    
-    // 電荷座標定義 [x, y] 以 playground 百分比表示
-    // 羊毛衣 (左側區域 0% ~ 50%)
-    const woolFixedPlus = [
-      {x: 10, y: 35}, {x: 18, y: 65}, {x: 28, y: 25}, 
-      {x: 38, y: 75}, {x: 22, y: 45}, {x: 32, y: 55}
-    ];
-    const woolElectrons = [
-      {id: 1, sx: 8, sy: 50, ex: 60, ey: 45, start: 10, end: 30},
-      {id: 2, sx: 15, sy: 25, ex: 70, ey: 30, start: 25, end: 48},
-      {id: 3, sx: 26, sy: 72, ex: 80, ey: 65, start: 42, end: 68},
-      {id: 4, sx: 34, sy: 35, ex: 65, ey: 75, start: 60, end: 85},
-      {id: 5, sx: 42, sy: 60, ex: 76, ey: 50, start: 75, end: 98}
-    ];
-    // 還有一個留在毛衣上的電子
-    const woolStaticElectron = {x: 12, y: 78};
+(function() {
+  const slider = document.getElementById('friction-slider');
+  const container = document.getElementById('charge-container');
 
-    // 氣球 (右側區域 50% ~ 100%)
-    const balloonFixedPlus = [
-      {x: 62, y: 30}, {x: 72, y: 60}, {x: 82, y: 25}, 
-      {x: 92, y: 65}, {x: 78, y: 45}, {x: 88, y: 52}
-    ];
-    const balloonStaticElectrons = [
-      {x: 64, y: 58}, {x: 74, y: 72}, {x: 84, y: 40}, 
-      {x: 90, y: 28}, {x: 70, y: 22}, {x: 80, y: 80}
-    ];
+  const woolFixedPlus = [
+    {x:10,y:35},{x:18,y:65},{x:28,y:25},{x:38,y:75},{x:22,y:45},{x:32,y:55}
+  ];
+  const woolElectrons = [
+    {id:1,sx:8,sy:50,ex:60,ey:45,start:10,end:30},
+    {id:2,sx:15,sy:25,ex:70,ey:30,start:25,end:48},
+    {id:3,sx:26,sy:72,ex:80,ey:65,start:42,end:68},
+    {id:4,sx:34,sy:35,ex:65,ey:75,start:60,end:85},
+    {id:5,sx:42,sy:60,ex:76,ey:50,start:75,end:98}
+  ];
+  const woolStaticElectron = {x:12,y:78};
+  const balloonFixedPlus = [
+    {x:62,y:30},{x:72,y:60},{x:82,y:25},{x:92,y:65},{x:78,y:45},{x:88,y:52}
+  ];
+  const balloonStaticElectrons = [
+    {x:64,y:58},{x:74,y:72},{x:84,y:40},{x:90,y:28},{x:70,y:22},{x:80,y:80}
+  ];
 
-    // 初始化與繪製電荷
-    function updateFrictionCharges() {
-      const val = parseInt(slider.value, 10);
-      container.innerHTML = '';
-      
-      // 1. 繪製固定正電荷
-      woolFixedPlus.forEach(pos => createChargeDot('+', 'plus', pos.x, pos.y));
-      balloonFixedPlus.forEach(pos => createChargeDot('+', 'plus', pos.x, pos.y));
-      
-      // 2. 繪製氣球原本的靜態負電荷
-      balloonStaticElectrons.forEach(pos => createChargeDot('-', 'minus', pos.x, pos.y));
-      
-      // 3. 繪製毛衣上不移動的負電荷
-      createChargeDot('-', 'minus', woolStaticElectron.x, woolStaticElectron.y);
-      
-      // 4. 繪製並計算流動的負電荷
-      woolElectrons.forEach(el => {
-        let x, y;
-        if (val <= el.start) {
-          x = el.sx;
-          y = el.sy;
-        } else if (val >= el.end) {
-          x = el.ex;
-          y = el.ey;
-        } else {
-          // 線性插值
-          const ratio = (val - el.start) / (el.end - el.start);
-          x = el.sx + ratio * (el.ex - el.sx);
-          y = el.sy + ratio * (el.ey - el.sy);
-        }
-        createChargeDot('-', 'minus', x, y);
-      });
-    }
-
-    function createChargeDot(char, type, pctX, pctY) {
-      const dot = document.createElement('div');
-      dot.className = `charge-dot ${type}`;
-      dot.textContent = char;
-      dot.style.left = `calc(${pctX}% - 9px)`;
-      dot.style.top = `calc(${pctY}% - 9px)`;
-      container.appendChild(dot);
-    }
-
-    slider.addEventListener('input', updateFrictionCharges);
-    // 監聽 reveal.js 切換頁面，確保切換過來時重繪
-    Reveal.on('slidechanged', e => {
-      if (e.currentSlide?.id === 'slide-friction') {
-        updateFrictionCharges();
+  function updateFrictionCharges() {
+    const val = parseInt(slider.value, 10);
+    container.innerHTML = '';
+    woolFixedPlus.forEach(p => dot('+','plus',p.x,p.y));
+    balloonFixedPlus.forEach(p => dot('+','plus',p.x,p.y));
+    balloonStaticElectrons.forEach(p => dot('-','minus',p.x,p.y));
+    dot('-','minus',woolStaticElectron.x,woolStaticElectron.y);
+    woolElectrons.forEach(el => {
+      let x,y;
+      if (val<=el.start) { x=el.sx; y=el.sy; }
+      else if (val>=el.end) { x=el.ex; y=el.ey; }
+      else {
+        const r=(val-el.start)/(el.end-el.start);
+        x=el.sx+r*(el.ex-el.sx); y=el.sy+r*(el.ey-el.sy);
       }
+      dot('-','minus',x,y);
     });
-    // 初始化繪製
-    setTimeout(updateFrictionCharges, 500);
-  })();
+  }
+
+  function dot(ch,type,px,py) {
+    const d = document.createElement('div');
+    d.className = `charge-dot ${type}`;
+    d.textContent = ch;
+    d.style.left = `calc(${px}% - 11px)`;
+    d.style.top = `calc(${py}% - 11px)`;
+    container.appendChild(d);
+  }
+
+  slider.addEventListener('input', updateFrictionCharges);
+  Reveal.on('slidechanged', e => {
+    if (e.currentSlide?.id === 'slide-friction') updateFrictionCharges();
+  });
+  setTimeout(updateFrictionCharges, 600);
+})();
 </script>
 
-<!-- === Slide 6: 雪球踢踏舞模擬器 JS === -->
+<!-- ================================================================
+     Slide 6: 雪球踢踏舞模擬器
+     ================================================================ -->
 <script>
-  let simActive = false;
-  let balloonActive = false;
-  let simInterval = null;
+  let simActive = false, balloonActive = false, simInterval = null;
   const balls = [];
-  const ballCount = 14;
+  const ballCount = 16;
 
   function initSim() {
-    const container = document.getElementById('sim-snowballs-container');
-    container.innerHTML = '';
+    const ct = document.getElementById('sim-snowballs-container');
+    ct.innerHTML = '';
     balls.length = 0;
-    
     const jar = document.getElementById('sim-jar');
-    const w = jar.clientWidth;
-    const h = jar.clientHeight;
-
-    for (let i = 0; i < ballCount; i++) {
-      // 隨動散落在底部
-      const ballEl = document.createElement('div');
-      ballEl.className = 'sim-ball';
-      container.appendChild(ballEl);
-      
+    const w = jar.clientWidth, h = jar.clientHeight;
+    for (let i=0; i<ballCount; i++) {
+      const el = document.createElement('div');
+      el.className = 'sim-ball';
+      ct.appendChild(el);
       balls.push({
-        el: ballEl,
-        x: 40 + Math.random() * (w - 120),  // 避免與最右側重疊
-        y: h - 25 - Math.random() * 20,
-        vx: (Math.random() - 0.5) * 1.5,
-        vy: 0,
-        radius: 6,
-        state: 'neutral' // 'neutral' or 'charged' (帶負電)
+        el, x: 30+Math.random()*(w-130), y: h-25-Math.random()*24,
+        vx:(Math.random()-0.5)*1.5, vy:0, radius:7, state:'neutral'
       });
     }
     drawBalls();
   }
-
   function drawBalls() {
     balls.forEach(b => {
-      b.el.style.left = `${b.x - b.radius}px`;
-      b.el.style.top = `${b.y - b.radius}px`;
-      if (b.state === 'charged') {
-        b.el.classList.add('charged');
-      } else {
-        b.el.classList.remove('charged');
-      }
+      b.el.style.left = `${b.x-b.radius}px`;
+      b.el.style.top  = `${b.y-b.radius}px`;
+      b.el.classList.toggle('charged', b.state==='charged');
     });
   }
-
   function toggleSimBalloon() {
     const btn = document.getElementById('btn-sim-toggle');
-    const balloon = document.getElementById('sim-balloon');
-    
+    const bl  = document.getElementById('sim-balloon');
     balloonActive = !balloonActive;
     if (balloonActive) {
-      balloon.style.right = '0px';
-      balloon.style.opacity = '1';
-      btn.textContent = '移開氣球';
-      btn.style.background = 'var(--accent)';
+      bl.style.right='0px'; bl.style.opacity='1';
+      btn.textContent='移開氣球 👋'; btn.style.background='linear-gradient(135deg,var(--accent),#ff9a6c)';
+      btn.style.boxShadow='0 4px 15px var(--glow-orange)';
     } else {
-      balloon.style.right = '-50px';
-      balloon.style.opacity = '0.2';
-      btn.textContent = '靠近帶電氣球';
-      btn.style.background = 'var(--accent2)';
+      bl.style.right='-55px'; bl.style.opacity='0.15';
+      btn.textContent='靠近帶電氣球 🎈'; btn.style.background='linear-gradient(135deg,var(--accent2),#29b6f6)';
+      btn.style.boxShadow='0 4px 15px var(--glow-blue)';
     }
   }
-
   function resetSim() {
     initSim();
-    if (balloonActive) {
-      toggleSimBalloon();
-    }
+    if (balloonActive) toggleSimBalloon();
   }
-
   function updatePhysics() {
     if (!simActive) return;
-    
     const jar = document.getElementById('sim-jar');
-    const w = jar.clientWidth;
-    const h = jar.clientHeight;
-    
-    const balloonX = w; // 氣球在最右壁
-    const gravity = 0.12;
-    const bounce = -0.55;
-
+    const w=jar.clientWidth, h=jar.clientHeight;
+    const bx=w, g=0.12, bounce=-0.55;
     balls.forEach(b => {
-      // 物理力計算
       if (balloonActive) {
-        if (b.state === 'neutral') {
-          // 1. 靜電感應：中性雪球被吸向氣球 (右側)
-          // 距離越近吸引力越大
-          const dx = balloonX - b.x;
-          const attraction = Math.min(2.5, 300 / (dx * dx + 100));
-          b.vx += attraction;
-          
-          // 加點微弱向上的風（罐中對流效應）
-          b.vy -= 0.05;
+        if (b.state==='neutral') {
+          const dx=bx-b.x;
+          b.vx+=Math.min(2.5,300/(dx*dx+100));
+          b.vy-=0.05;
         } else {
-          // 2. 同電相斥：帶電雪球被氣球排斥 (向左推)
-          const dx = balloonX - b.x;
-          const repulsion = Math.min(3.5, 450 / (dx * dx + 100));
-          b.vx -= repulsion;
+          const dx=bx-b.x;
+          b.vx-=Math.min(3.5,450/(dx*dx+100));
         }
       }
-
-      // 重力
-      b.vy += gravity;
-
-      // 更新位置
-      b.x += b.vx;
-      b.y += b.vy;
-
-      // 邊界碰撞與傳電邏輯
-      // 右壁 (氣球傳電區)
-      if (b.x >= w - b.radius - 8) {
-        b.x = w - b.radius - 8;
-        b.vx *= bounce;
-        
-        if (balloonActive && b.state === 'neutral') {
-          // 接觸氣球傳電，雪球瞬間帶負電
-          b.state = 'charged';
-          // 給予排斥的反彈初速度
-          b.vx = -3 - Math.random() * 2;
-          b.vy += (Math.random() - 0.5) * 2;
+      b.vy+=g; b.x+=b.vx; b.y+=b.vy;
+      if (b.x>=w-b.radius-8) {
+        b.x=w-b.radius-8; b.vx*=bounce;
+        if (balloonActive && b.state==='neutral') {
+          b.state='charged'; b.vx=-3-Math.random()*2; b.vy+=(Math.random()-0.5)*2;
         }
       }
-      
-      // 左壁
-      if (b.x <= b.radius + 8) {
-        b.x = b.radius + 8;
-        b.vx *= bounce;
+      if (b.x<=b.radius+8) { b.x=b.radius+8; b.vx*=bounce; }
+      if (b.y>=h-b.radius-8) {
+        b.y=h-b.radius-8; b.vy*=bounce; b.vx*=0.8;
+        if (b.state==='charged') b.state='neutral';
       }
-
-      // 罐底 (接地放電中和區)
-      if (b.y >= h - b.radius - 6) {
-        b.y = h - b.radius - 6;
-        b.vy *= bounce;
-        
-        // 速度衰減
-        b.vx *= 0.8;
-        
-        if (b.state === 'charged') {
-          // 雪球接地，電荷被導入地面，變回中性
-          b.state = 'neutral';
-        }
-      }
-
-      // 罐頂
-      if (b.y <= b.radius + 8) {
-        b.y = b.radius + 8;
-        b.vy *= bounce;
-      }
+      if (b.y<=b.radius+8) { b.y=b.radius+8; b.vy*=bounce; }
     });
-
     drawBalls();
   }
-
-  // 監聽 reveal.js 切換，僅在該頁面處於啟用狀態時執行物理迴圈
   Reveal.on('slidechanged', e => {
-    if (e.currentSlide?.id === 'slide-simulator') {
-      simActive = true;
-      initSim();
-      if (!simInterval) {
-        simInterval = setInterval(updatePhysics, 1000 / 60);
-      }
+    if (e.currentSlide?.id==='slide-simulator') {
+      simActive=true; initSim();
+      if (!simInterval) simInterval=setInterval(updatePhysics,1000/60);
     } else {
-      simActive = false;
-      if (simInterval) {
-        clearInterval(simInterval);
-        simInterval = null;
-      }
+      simActive=false;
+      if (simInterval) { clearInterval(simInterval); simInterval=null; }
     }
   });
-
-  // 初次延遲初始化
-  window.addEventListener('load', () => {
-    initSim();
-  });
+  window.addEventListener('load', initSim);
 </script>
 
-<!-- === Firebase 串接模組 (文字雲 & 投票) === -->
+<!-- ================================================================
+     Firebase 文字雲 & 投票
+     ================================================================ -->
 <script type="module">
   import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js';
   import {
     getFirestore, collection, addDoc, onSnapshot,
-    serverTimestamp, query, orderBy, doc, setDoc
+    serverTimestamp, query, doc, setDoc
   } from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js';
 
-  // Firebase 共用設定
   const firebaseConfig = {
     apiKey: "AIzaSyAYQhNavPSce17XtvDC5xnXyl9iUhW9KjA",
     authDomain: "teacherstudy-109ef.firebaseapp.com",
@@ -903,171 +877,245 @@
     messagingSenderId: "196599230156",
     appId: "1:196599230156:web:cfe55d364df3ae1b9d5c69"
   };
-  const app = initializeApp(firebaseConfig);
-  const fdb = getFirestore(app);
 
-  // ==========================================
-  // 1. 即時文字雲
-  // ==========================================
-  const wordsRef = collection(fdb, 'electrostatic_snow_wordcloud');
-  const WC_COLORS = ['#4fc3f7','#e8643a','#ffb74d','#81c784','#ce93d8','#80deea','#f48fb1'];
+  let fdb, wordsRef, firebaseReady = false;
+  // 本地 fallback 資料
+  let localWords = [];
+
+  try {
+    const app = initializeApp(firebaseConfig);
+    fdb = getFirestore(app);
+    wordsRef = collection(fdb, 'electrostatic_snow_wordcloud');
+    firebaseReady = true;
+    console.log('[WC] Firebase initialized OK');
+  } catch (e) {
+    console.warn('[WC] Firebase init failed, using local mode:', e);
+  }
+
+  const WC_COLORS = ['#4fc3f7','#ff6b3d','#ffa726','#66bb6a','#ce93d8','#80deea','#f48fb1','#fff176'];
   let wcData = [];
 
+  function showToast(msg) {
+    const t = document.createElement('div');
+    t.className = 'wc-toast';
+    t.textContent = msg;
+    document.body.appendChild(t);
+    setTimeout(() => t.remove(), 1800);
+  }
+
+  // ── 文字雲提交 ──
   window.wcSubmit = async function() {
     const input = document.getElementById('wc-input');
     const word = input.value.trim();
     if (!word) return;
     const btn = document.getElementById('wc-btn');
     btn.disabled = true;
+    btn.textContent = '送出中…';
+    const statusEl = document.getElementById('wc-status');
+
     try {
-      await addDoc(wordsRef, { word, created_at: serverTimestamp() });
+      if (firebaseReady && wordsRef) {
+        await addDoc(wordsRef, { word, created_at: serverTimestamp() });
+      }
+      // 同步到本地
+      localWords.push(word);
+      updateWcFromLocal();
       input.value = '';
-    } catch(e) { console.error("Firestore Error:", e); }
-    finally { btn.disabled = false; }
+      statusEl.textContent = `✅ 「${word}」 已送出！`;
+      showToast(`✅ 「${word}」 已送出！`);
+      setTimeout(() => { statusEl.textContent = ''; }, 2500);
+    } catch(e) {
+      console.error('[WC] Submit error:', e);
+      // Firebase 失敗仍用本地
+      localWords.push(word);
+      updateWcFromLocal();
+      input.value = '';
+      statusEl.textContent = `✅ 「${word}」 已記錄（離線模式）`;
+      showToast(`✅ 「${word}」 已記錄！`);
+      setTimeout(() => { statusEl.textContent = ''; }, 2500);
+    } finally {
+      btn.disabled = false;
+      btn.textContent = '送出答案 ↵';
+    }
   };
 
-  document.getElementById('wc-input')?.addEventListener('keypress', e => {
-    if (e.key === 'Enter') window.wcSubmit();
+  // 確保 Enter & Click 都能觸發
+  document.getElementById('wc-input')?.addEventListener('keydown', e => {
+    if (e.key === 'Enter') { e.preventDefault(); window.wcSubmit(); }
   });
-  document.getElementById('wc-btn')?.addEventListener('click', window.wcSubmit);
+  document.getElementById('wc-btn')?.addEventListener('click', () => window.wcSubmit());
 
-  onSnapshot(query(wordsRef, orderBy('created_at', 'asc')), snap => {
-    const words = [];
-    snap.forEach(doc => words.push(doc.data().word));
+  // ── 本地即時文字雲更新 ──
+  function updateWcFromLocal() {
     const counts = {};
-    words.forEach(w => counts[w] = (counts[w] || 0) + 1);
-    wcData = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+    localWords.forEach(w => counts[w] = (counts[w]||0)+1);
+    wcData = Object.entries(counts).sort((a,b) => b[1]-a[1]);
 
-    document.getElementById('wc-total').textContent = words.length;
+    document.getElementById('wc-total').textContent = localWords.length;
     document.getElementById('wc-unique').textContent = wcData.length;
 
     const listEl = document.getElementById('wc-list');
-    listEl.innerHTML = wcData.slice(0, 10).map(([w, c]) =>
-      `<div style="display:flex;justify-content:space-between;padding:4px 0;
-                   border-bottom:1px solid rgba(255,255,255,0.06);">
-        <span>${w}</span><span style="color:var(--accent);font-weight:700;">${c} 次</span>
+    listEl.innerHTML = wcData.slice(0,12).map(([w,c],i) =>
+      `<div style="display:flex;justify-content:space-between;padding:5px 2px;
+                   border-bottom:1px solid rgba(255,255,255,0.07);
+                   ${i===0?'color:var(--accent2);font-weight:700;':''}">
+        <span>${i<3?['🥇','🥈','🥉'][i]+' ':''} ${w}</span>
+        <span style="color:var(--accent);font-weight:700;">${c}</span>
       </div>`
-    ).join('') || '<div style="color:#555;padding:8px 0;text-align:center;">尚無資料</div>';
+    ).join('') || '<div style="color:#667;padding:12px 0;text-align:center;">等待第一位同學…</div>';
 
     const empty = document.getElementById('wc-empty');
     if (empty) empty.style.display = wcData.length > 0 ? 'none' : '';
     drawWordCloud();
-  });
+  }
+
+  // ── Firebase 即時同步（若可用）──
+  if (firebaseReady && wordsRef) {
+    try {
+      // 不使用 orderBy 避免需要 composite index
+      onSnapshot(collection(fdb, 'electrostatic_snow_wordcloud'), snap => {
+        const words = [];
+        snap.forEach(d => { const data = d.data(); if (data.word) words.push(data.word); });
+        if (words.length > 0) {
+          // 合併 Firebase 與本地資料
+          const merged = new Set([...words, ...localWords]);
+          localWords = [...merged]; // 去重
+          // 重新計算（使用 Firebase 完整資料）
+          const counts = {};
+          words.forEach(w => counts[w] = (counts[w]||0)+1);
+          // 加回僅在本地的
+          localWords.forEach(w => { if (!counts[w]) counts[w] = 1; });
+          wcData = Object.entries(counts).sort((a,b) => b[1]-a[1]);
+
+          document.getElementById('wc-total').textContent = words.length;
+          document.getElementById('wc-unique').textContent = wcData.length;
+          const listEl = document.getElementById('wc-list');
+          listEl.innerHTML = wcData.slice(0,12).map(([w,c],i) =>
+            `<div style="display:flex;justify-content:space-between;padding:5px 2px;
+                         border-bottom:1px solid rgba(255,255,255,0.07);
+                         ${i===0?'color:var(--accent2);font-weight:700;':''}">
+              <span>${i<3?['🥇','🥈','🥉'][i]+' ':''} ${w}</span>
+              <span style="color:var(--accent);font-weight:700;">${c}</span>
+            </div>`
+          ).join('');
+          const empty = document.getElementById('wc-empty');
+          if (empty) empty.style.display = wcData.length > 0 ? 'none' : '';
+          drawWordCloud();
+        }
+      }, err => {
+        console.warn('[WC] onSnapshot error (will use local):', err);
+      });
+    } catch(e) {
+      console.warn('[WC] onSnapshot setup failed:', e);
+    }
+  }
 
   function drawWordCloud() {
     const canvas = document.getElementById('wc-canvas');
     if (!canvas || typeof WordCloud === 'undefined') return;
-    
-    // 依容器動態調整大小
     const rect = canvas.parentNode.getBoundingClientRect();
-    canvas.width = rect.width;
-    canvas.height = rect.height;
-    
+    if (rect.width < 20 || rect.height < 20) return;
+    canvas.width = rect.width * (window.devicePixelRatio || 1);
+    canvas.height = rect.height * (window.devicePixelRatio || 1);
+    canvas.style.width = rect.width + 'px';
+    canvas.style.height = rect.height + 'px';
     if (wcData.length === 0) return;
     const maxCount = wcData[0][1];
-    
+    const scale = Math.min(rect.width, rect.height) / 350;
     WordCloud(canvas, {
-      list: wcData.map(([w, c]) => [w, Math.max(16, Math.round((c / maxCount) * 60))]),
-      gridSize: 8,
+      list: wcData.map(([w,c]) => [w, Math.max(22, Math.round((c/maxCount) * 72 * scale))]),
+      gridSize: 6,
       weightFactor: 1,
-      fontFamily: '"Microsoft JhengHei", "Segoe UI", "Noto Sans TC", sans-serif',
-      color: () => WC_COLORS[Math.floor(Math.random() * WC_COLORS.length)],
+      fontFamily: '"Noto Sans TC", "Microsoft JhengHei", sans-serif',
+      fontWeight: 700,
+      color: () => WC_COLORS[Math.floor(Math.random()*WC_COLORS.length)],
       backgroundColor: 'transparent',
-      rotateRatio: 0.25,
+      rotateRatio: 0.2,
       shuffle: true,
     });
   }
 
   Reveal.on('slidechanged', e => {
-    if (e.currentSlide?.id === 'slide-wordcloud') {
-      setTimeout(drawWordCloud, 200);
-    }
+    if (e.currentSlide?.id === 'slide-wordcloud') setTimeout(drawWordCloud, 250);
   });
 
-  // ==========================================
-  // 2. 即時單選投票
-  // ==========================================
+  // ════════════════════════════════════
+  //  投票
+  // ════════════════════════════════════
   const OPTIONS = [
-    { id: 'a', label: 'A. 空氣中水分子很多，會把電荷導走並中和' },
-    { id: 'b', label: 'B. 空氣濕度高，讓保麗龍球受潮變重了' },
-    { id: 'c', label: 'C. 氣球表面遇到水會發生溶解而漏電' },
+    { id:'a', label:'A. 空氣中水分子很多，會把電荷導走並中和' },
+    { id:'b', label:'B. 空氣濕度高，讓保麗龍球受潮變重了' },
+    { id:'c', label:'C. 氣球表面遇到水會發生溶解而漏電' },
   ];
-  const pollRef = doc(fdb, 'electrostatic_snow_poll', 'results');
-  const userId = 'student_' + Math.random().toString(36).slice(2, 9);
+  let pollRef = null;
+  if (firebaseReady) pollRef = doc(fdb, 'electrostatic_snow_poll', 'results');
+  const userId = 'student_' + Math.random().toString(36).slice(2,9);
   let myVote = null;
 
-  // 渲染投票介面
-  const container = document.getElementById('poll-options');
-  container.innerHTML = '';
+  const pollContainer = document.getElementById('poll-options');
+  pollContainer.innerHTML = '';
   OPTIONS.forEach(opt => {
     const btn = document.createElement('button');
     btn.id = `poll-btn-${opt.id}`;
     btn.innerHTML = `
-      <div style="display:flex;align-items:center;gap:10px;">
-        <span style="flex:0 0 20px;height:20px;border-radius:50%;border:2px solid rgba(255,255,255,0.4);
-                     display:flex;align-items:center;justify-content:center;font-size:11px;"
+      <div style="display:flex;align-items:center;gap:12px;">
+        <span style="flex:0 0 24px;height:24px;border-radius:50%;border:2px solid rgba(255,255,255,0.4);
+                     display:flex;align-items:center;justify-content:center;font-size:13px;transition:all 0.3s;"
               id="poll-check-${opt.id}"></span>
-        <span style="flex:1;text-align:left;font-size:0.9em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${opt.label}</span>
+        <span style="flex:1;text-align:left;font-size:0.95em;">${opt.label}</span>
         <span id="poll-bar-wrap-${opt.id}"
-              style="flex:0 0 100px;height:6px;background:rgba(255,255,255,0.1);border-radius:3px;overflow:hidden;">
-          <div id="poll-bar-${opt.id}" style="height:100%;width:0;background:var(--accent2);border-radius:3px;transition:width 0.4s;"></div>
+              style="flex:0 0 110px;height:8px;background:rgba(255,255,255,0.1);border-radius:4px;overflow:hidden;">
+          <div id="poll-bar-${opt.id}" style="height:100%;width:0;background:linear-gradient(90deg,var(--accent2),#29b6f6);border-radius:4px;transition:width 0.5s ease;"></div>
         </span>
-        <span id="poll-pct-${opt.id}" style="flex:0 0 35px;text-align:right;font-size:0.8em;color:#aaa;">0%</span>
+        <span id="poll-pct-${opt.id}" style="flex:0 0 40px;text-align:right;font-size:0.85em;color:#aab;">0%</span>
       </div>
     `;
-    btn.style.cssText = `width:100%;padding:10px 14px;background:rgba(255,255,255,0.06);
-      border:1px solid rgba(255,255,255,0.12);border-radius:8px;color:#fff;
-      cursor:pointer;font-family:inherit;outline:none;transition:background 0.3s;`;
-    
+    btn.style.cssText = `width:100%;padding:14px 18px;background:rgba(255,255,255,0.06);
+      border:1px solid rgba(255,255,255,0.12);border-radius:10px;color:#fff;
+      cursor:pointer;font-family:inherit;outline:none;transition:all 0.3s;font-size:0.5em;`;
+    btn.onmouseenter = () => { btn.style.background='rgba(79,195,247,0.1)'; btn.style.borderColor='rgba(79,195,247,0.3)'; };
+    btn.onmouseleave = () => { btn.style.background='rgba(255,255,255,0.06)'; btn.style.borderColor='rgba(255,255,255,0.12)'; };
     btn.onclick = () => vote(opt.id);
-    container.appendChild(btn);
+    pollContainer.appendChild(btn);
   });
 
   async function vote(optId) {
     myVote = optId;
-    const data = {};
-    data[`votes.${userId}`] = optId;
-    data.updated_at = serverTimestamp();
-    
-    // 更新本地與遠端
     OPTIONS.forEach(opt => {
-      const check = document.getElementById(`poll-check-${opt.id}`);
-      if (opt.id === optId) {
-        check.textContent = '✓';
-        check.style.background = 'var(--accent2)';
-        check.style.borderColor = 'var(--accent2)';
+      const chk = document.getElementById(`poll-check-${opt.id}`);
+      if (opt.id===optId) {
+        chk.textContent='✓'; chk.style.background='var(--accent2)'; chk.style.borderColor='var(--accent2)';
       } else {
-        check.textContent = '';
-        check.style.background = 'transparent';
-        check.style.borderColor = 'rgba(255,255,255,0.4)';
+        chk.textContent=''; chk.style.background='transparent'; chk.style.borderColor='rgba(255,255,255,0.4)';
       }
     });
-
-    try {
-      await setDoc(pollRef, data, { merge: true });
-    } catch(e) {
-      console.error("Firestore Vote Error:", e);
+    showToast('✅ 投票成功！');
+    if (firebaseReady && pollRef) {
+      try {
+        const data = {}; data[`votes.${userId}`] = optId; data.updated_at = serverTimestamp();
+        await setDoc(pollRef, data, { merge: true });
+      } catch(e) { console.error('[Poll] error:', e); }
     }
   }
 
-  onSnapshot(pollRef, snap => {
-    const data = snap.data() || {};
-    const votes = data.votes || {};
-    const counts = {};
-    OPTIONS.forEach(o => counts[o.id] = 0);
-    Object.values(votes).forEach(v => { 
-      if (counts[v] !== undefined) counts[v]++; 
-    });
-    
-    const total = Object.values(counts).reduce((a, b) => a + b, 0);
-    document.getElementById('poll-total').textContent = total;
-    
-    OPTIONS.forEach(opt => {
-      const pct = total > 0 ? Math.round((counts[opt.id] / total) * 100) : 0;
-      document.getElementById(`poll-bar-${opt.id}`).style.width = pct + '%';
-      document.getElementById(`poll-pct-${opt.id}`).textContent = pct + '%';
-    });
-  });
+  if (firebaseReady && pollRef) {
+    try {
+      onSnapshot(pollRef, snap => {
+        const data = snap.data() || {};
+        const votes = data.votes || {};
+        const counts = {};
+        OPTIONS.forEach(o => counts[o.id]=0);
+        Object.values(votes).forEach(v => { if(counts[v]!==undefined) counts[v]++; });
+        const total = Object.values(counts).reduce((a,b)=>a+b,0);
+        document.getElementById('poll-total').textContent = total;
+        OPTIONS.forEach(opt => {
+          const pct = total>0 ? Math.round((counts[opt.id]/total)*100) : 0;
+          document.getElementById(`poll-bar-${opt.id}`).style.width = pct+'%';
+          document.getElementById(`poll-pct-${opt.id}`).textContent = pct+'%';
+        });
+      }, err => console.warn('[Poll] onSnapshot error:', err));
+    } catch(e) { console.warn('[Poll] onSnapshot setup failed:', e); }
+  }
 </script>
 </body>
 </html>
