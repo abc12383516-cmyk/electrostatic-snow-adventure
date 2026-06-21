@@ -287,20 +287,28 @@
       background: linear-gradient(135deg, rgba(26,143,209,0.06) 0%, rgba(200,230,255,0.15) 100%);
       border: 1.5px solid var(--ice-border);
     }
+    .danmaku-global-wall {
+      position: fixed; inset: 0; pointer-events: none; z-index: 9999; overflow: hidden; display: none;
+    }
     .danmaku-item {
       position: absolute;
+      left: 0;
       white-space: nowrap;
-      font-weight: 700;
+      font-weight: 800;
       font-family: 'Noto Sans TC', sans-serif;
-      padding: 6px 18px;
-      border-radius: 20px;
+      padding: 8px 22px;
+      border-radius: 30px;
       animation: danmaku-fly linear forwards;
       pointer-events: none;
-      text-shadow: 0 1px 3px rgba(0,0,0,0.15);
+      text-shadow: 0 2px 4px rgba(0,0,0,0.15);
+      border: 1px solid rgba(255,255,255,0.25);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
     }
     @keyframes danmaku-fly {
-      from { transform: translateX(110%); opacity: 0.9; }
-      to   { transform: translateX(-200%); opacity: 0.6; }
+      from { transform: translateX(100vw); opacity: 0.95; }
+      to   { transform: translateX(-100%); opacity: 0.7; }
     }
 
     /* ============================================
@@ -366,6 +374,9 @@
 
 <!-- 全局雪花粒子層 -->
 <div class="snowflake-layer" id="snow-layer"></div>
+
+<!-- 全螢幕彈幕層 -->
+<div id="danmaku-global-wall" class="danmaku-global-wall"></div>
 
 <div class="reveal">
   <div class="slides">
@@ -694,6 +705,12 @@
     backgroundTransition: 'fade', center: true,
     progress: true, controls: true, slideNumber: 'c/t', plugins: []
   });
+  Reveal.on('ready', () => {
+    const globalWall = document.getElementById('danmaku-global-wall');
+    if (Reveal.getCurrentSlide()?.id === 'slide-danmaku') {
+      if (globalWall) globalWall.style.display = 'block';
+    }
+  });
 </script>
 
 <!-- ================================================================
@@ -797,6 +814,17 @@
   Reveal.on('slidechanged',e=>{
     if(e.currentSlide?.id==='slide-simulator'){simActive=true;initSim();if(!simInterval)simInterval=setInterval(updatePhysics,1000/60);}
     else{simActive=false;if(simInterval){clearInterval(simInterval);simInterval=null;}}
+
+    // 切換第二頁全螢幕彈幕顯示與清除
+    const globalWall = document.getElementById('danmaku-global-wall');
+    if (e.currentSlide?.id === 'slide-danmaku') {
+      if (globalWall) globalWall.style.display = 'block';
+    } else {
+      if (globalWall) {
+        globalWall.style.display = 'none';
+        globalWall.innerHTML = '';
+      }
+    }
   });
   window.addEventListener('load',initSim);
 </script>
@@ -947,19 +975,22 @@
   }
 
   function launchDanmaku(word) {
-    const wall = document.getElementById('danmaku-wall');
+    if (Reveal.getCurrentSlide()?.id !== 'slide-danmaku') return;
+
+    const wall = document.getElementById('danmaku-global-wall');
     const hint = document.getElementById('danmaku-hint');
     if (hint) hint.style.display = 'none';
+
+    if (!wall) return;
 
     const item = document.createElement('div');
     item.className = 'danmaku-item';
     const style = DM_COLORS[Math.floor(Math.random()*DM_COLORS.length)];
     item.style.background = style.bg;
     item.style.color = style.color;
-    item.style.fontSize = (18 + Math.random()*14) + 'px';
-    item.style.top = (5 + Math.random()*85) + '%';
-    item.style.right = '0';
-    item.style.animationDuration = (5 + Math.random()*4) + 's';
+    item.style.fontSize = (22 + Math.random()*16) + 'px';
+    item.style.top = (12 + Math.random()*62) + '%';
+    item.style.animationDuration = (2.2 + Math.random()*1.8) + 's';
     item.textContent = word;
     wall.appendChild(item);
 
